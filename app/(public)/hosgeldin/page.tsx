@@ -3,6 +3,7 @@
 import type { Metadata } from "next";
 import { redirect } from "next/navigation";
 import { listActiveArtists } from "@/features/artists/service";
+import { isProfileComplete } from "@/lib/auth/profile-completion";
 import { getSessionUser } from "@/lib/auth/session";
 import ui from "@/components/ui/ui.module.css";
 import { OnboardingClient } from "./OnboardingClient";
@@ -12,6 +13,7 @@ export const metadata: Metadata = { title: "Hoş Geldin" };
 export default async function OnboardingPage() {
   const user = await getSessionUser();
   if (!user) redirect("/giris");
+  if (isProfileComplete(user.profile)) redirect("/");
 
   const artists = await listActiveArtists(user.id);
 
