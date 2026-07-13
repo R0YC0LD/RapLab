@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>RapLab — Türkçe Rap Sanatçı–Topluluk Platformu</title>
+<meta name="description" content="RapLab; sanatçının konuştuğu, takipçinin takip edip beğenerek tepki verdiği premium dijital kültür platformu. Bu sayfa projenin tanıtımıdır; uygulamanın kendisi sunucu gerektirir." />
+<style>
+  :root {
+    --bg-primary: #08090b;
+    --bg-secondary: #101216;
+    --bg-elevated: #171a20;
+    --surface-soft: rgba(255, 255, 255, 0.045);
+    --text-primary: #f5f5f3;
+    --text-secondary: #a8abb2;
+    --text-muted: #70747d;
+    --border-soft: rgba(255, 255, 255, 0.09);
+    --border-strong: rgba(255, 255, 255, 0.18);
+    --accent: #ff4d5a;
+    --accent-violet: #9d6bff;
+    --accent-gold: #e8b64c;
+    --accent-blue: #4da3ff;
+    --success: #58d68d;
+    --radius-md: 14px;
+    --radius-lg: 22px;
+    --radius-pill: 999px;
+  }
+  * { box-sizing: border-box; margin: 0; }
+  body {
+    background: var(--bg-primary);
+    color: var(--text-primary);
+    font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+  body::before {
+    content: "";
+    position: fixed; inset: 0; pointer-events: none; z-index: 1; opacity: 0.035;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+  main { position: relative; z-index: 2; }
+  .container { max-width: 1080px; margin-inline: auto; padding-inline: 24px; }
+  .display {
+    font-family: "Arial Black", "Segoe UI", sans-serif;
+    text-transform: uppercase;
+    letter-spacing: -0.02em;
+    line-height: 0.95;
+    font-weight: 900;
+  }
+
+  /* Hero */
+  .hero {
+    min-height: 72vh;
+    display: flex; align-items: center;
+    background:
+      radial-gradient(80% 60% at 20% 30%, rgba(255, 77, 90, 0.16), transparent 65%),
+      radial-gradient(60% 50% at 85% 70%, rgba(157, 107, 255, 0.12), transparent 60%);
+    border-bottom: 1px solid var(--border-soft);
+    padding: 96px 0 64px;
+  }
+  .hero h1 { font-size: clamp(4rem, 13vw, 9rem); }
+  .hero h1 em { font-style: normal; color: var(--accent); }
+  .kicker {
+    display: inline-flex; align-items: center; gap: 10px;
+    font-size: 0.75rem; letter-spacing: 0.22em; text-transform: uppercase;
+    color: var(--text-secondary); margin-bottom: 18px;
+  }
+  .kicker::before { content: ""; width: 28px; height: 1px; background: var(--accent); }
+  .tagline {
+    font-family: Georgia, serif; font-size: 1.15rem; color: var(--text-secondary);
+    max-width: 56ch; margin-top: 22px;
+  }
+  .hero-actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 36px; }
+  .btn {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 13px 28px; border-radius: var(--radius-pill);
+    font-weight: 700; font-size: 0.9rem; text-decoration: none;
+    transition: filter 180ms ease, background-color 180ms ease;
+  }
+  .btn-primary { background: var(--accent); color: #0a0a0c; }
+  .btn-primary:hover { filter: brightness(1.1); }
+  .btn-secondary { border: 1px solid var(--border-strong); color: var(--text-primary); }
+  .btn-secondary:hover { background: var(--surface-soft); }
+
+  .notice {
+    margin-top: 40px; padding: 18px 22px; max-width: 640px;
+    border: 1px dashed var(--border-strong); border-radius: var(--radius-md);
+    font-size: 0.85rem; color: var(--text-secondary);
+  }
+  .notice strong { color: var(--accent-gold); }
+
+  section { padding: 72px 0; }
+  section.alt { background: var(--bg-secondary); border-block: 1px solid var(--border-soft); }
+  h2.section-title { font-size: 1.8rem; margin-bottom: 8px; }
+  .section-sub { color: var(--text-muted); font-size: 0.9rem; margin-bottom: 36px; }
+
+  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 18px; }
+  .card {
+    background: var(--bg-elevated); border: 1px solid var(--border-soft);
+    border-radius: var(--radius-lg); padding: 26px;
+  }
+  .card h3 { font-size: 1.05rem; margin-bottom: 8px; display: flex; align-items: center; gap: 10px; }
+  .card p { color: var(--text-secondary); font-size: 0.9rem; }
+  .dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+
+  /* Kurgusal sanatçı şeridi */
+  .rapline { display: flex; gap: 22px; flex-wrap: wrap; }
+  .ra { display: flex; flex-direction: column; align-items: center; gap: 8px; font-size: 0.75rem; color: var(--text-secondary); }
+  .ring { width: 78px; height: 78px; border-radius: 50%; padding: 3px; }
+  .ring > div {
+    width: 100%; height: 100%; border-radius: 50%;
+    border: 3px solid var(--bg-primary);
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 900; font-size: 1.4rem; color: #0a0a0c;
+  }
+
+  pre {
+    background: #0d0f13; border: 1px solid var(--border-soft); border-radius: var(--radius-md);
+    padding: 20px 24px; overflow-x: auto; font-size: 0.85rem; line-height: 1.7;
+    color: var(--text-secondary);
+  }
+  pre .c { color: var(--text-muted); }
+  pre .k { color: var(--accent-blue); }
+
+  .steps { counter-reset: step; display: grid; gap: 14px; max-width: 720px; }
+  .step {
+    display: flex; gap: 16px; align-items: flex-start;
+    background: var(--bg-elevated); border: 1px solid var(--border-soft);
+    border-radius: var(--radius-md); padding: 18px 20px;
+  }
+  .step::before {
+    counter-increment: step; content: counter(step);
+    width: 30px; height: 30px; border-radius: 50%; flex-shrink: 0;
+    background: rgba(255, 77, 90, 0.15); color: var(--accent);
+    display: flex; align-items: center; justify-content: center; font-weight: 800;
+  }
+  .step p { color: var(--text-secondary); font-size: 0.9rem; }
+  .step strong { color: var(--text-primary); }
+  a { color: var(--accent-blue); }
+
+  footer {
+    border-top: 1px solid var(--border-soft);
+    padding: 48px 24px 64px; text-align: center; color: var(--text-muted); font-size: 0.85rem;
+  }
+  footer .display { font-size: 1.3rem; color: var(--text-secondary); margin-bottom: 10px; }
+  @media (prefers-reduced-motion: no-preference) {
+    .hero > .container { animation: rise 640ms cubic-bezier(0.16, 1, 0.3, 1) both; }
+    @keyframes rise { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
+  }
+</style>
+</head>
+<body>
+<main>
+  <header class="hero">
+    <div class="container">
+      <p class="kicker">Türkçe rap kültürü için</p>
+      <h1 class="display">RAP<em>LAB</em></h1>
+      <p class="tagline">
+        Sanatçının konuştuğu, takipçinin takip edip beğenerek tepki verdiği, sanatçı
+        kimliğinin ve topluluğunun merkezde olduğu premium dijital kültür platformu.
+      </p>
+      <div class="hero-actions">
+        <a class="btn btn-primary" href="https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2FR0YC0LD%2FRapLab" rel="noopener">▲ Vercel'de Canlıya Al</a>
+        <a class="btn btn-secondary" href="https://github.com/R0YC0LD/RapLab" rel="noopener">GitHub'da İncele</a>
+      </div>
+      <p class="notice">
+        <strong>Not:</strong> Bu sayfa projenin statik tanıtımıdır. RapLab; kimlik doğrulama,
+        veritabanı (RLS) ve API içeren bir Next.js sunucu uygulamasıdır — GitHub Pages yalnızca
+        statik dosya sunduğu için uygulamanın kendisi burada çalışamaz. Canlı sürüm için
+        yukarıdaki Vercel butonunu kullan veya aşağıdaki adımlarla yerelde çalıştır.
+      </p>
+    </div>
+  </header>
+
+  <section>
+    <div class="container">
+      <h2 class="section-title display">Platform Ne Sunuyor?</h2>
+      <p class="section-sub">Şartnamenin (37 bölüm) birebir uygulaması</p>
+      <div class="grid">
+        <div class="card"><h3><span class="dot" style="background:#ff4d5a"></span>Sanatçı Profilleri</h3><p>Sinematik kapak açılışı, sanatçıya özel tema renkleri, sekmeli içerik: gönderiler, medya, projeler, hakkında, zaman çizelgesi.</p></div>
+        <div class="card"><h3><span class="dot" style="background:#9d6bff"></span>RapLine</h3><p>Durum halkalı yatay sanatçı şeridi: yeni gönderi, aktif geri sayım, RapLab özel ve yeni doğrulanan işaretleri.</p></div>
+        <div class="card"><h3><span class="dot" style="background:#4da3ff"></span>Kontrollü Etkileşim</h3><p>Kullanıcılar yalnızca takip eder ve beğenir. Yorum, DM ve repost yok — veritabanı seviyesinde (RLS) engelli.</p></div>
+        <div class="card"><h3><span class="dot" style="background:#e8b64c"></span>8 Gönderi Türü</h3><p>Metin, görsel, galeri, video (≤90 sn), ses önizlemesi (≤60 sn), duyuru, sunucu saatli geri sayım, proje.</p></div>
+        <div class="card"><h3><span class="dot" style="background:#58d68d"></span>Artist Studio</h3><p>Üç sütunlu gönderi oluşturucu, canlı ön izleme, zamanlama, medya kütüphanesi, tema editörü, analizler, ekip izinleri.</p></div>
+        <div class="card"><h3><span class="dot" style="background:#f2c94c"></span>Control Center</h3><p>Başvuru onayı, moderasyon, özellik bayrakları, silinemez audit log, sistem sağlığı — 16 yönetim bölümü.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="alt">
+    <div class="container">
+      <h2 class="section-title display">Kurgusal Demo Kadrosu</h2>
+      <p class="section-sub">Uygulama, Supabase anahtarları tanımlanana kadar bu kurgusal sanatçılarla DEMO modunda çalışır</p>
+      <div class="rapline">
+        <div class="ra"><div class="ring" style="background:#ff4d5a"><div style="background:linear-gradient(135deg,#ff4d5a,#2b3a67)">R</div></div>Ray Vold<br>İstanbul</div>
+        <div class="ra"><div class="ring" style="background:#9d6bff"><div style="background:linear-gradient(135deg,#9d6bff,#241a3d)">K</div></div>Karga<br>İzmir</div>
+        <div class="ra"><div class="ring" style="background:#e8b64c"><div style="background:linear-gradient(135deg,#e8b64c,#3a2d1d)">S</div></div>Sema K<br>İstanbul</div>
+        <div class="ra"><div class="ring" style="background:#58d68d"><div style="background:linear-gradient(135deg,#58d68d,#15352a)">G</div></div>Gölge 06<br>Ankara</div>
+        <div class="ra"><div class="ring" style="background:#4da3ff"><div style="background:linear-gradient(135deg,#4da3ff,#1d2b3a)">N</div></div>Nefes<br>Ankara</div>
+        <div class="ra"><div class="ring" style="background:#ff8a5c"><div style="background:linear-gradient(135deg,#ff8a5c,#3d241a)">B</div></div>Beton Çiçeği<br>Adana</div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="container">
+      <h2 class="section-title display">Yerelde Çalıştır</h2>
+      <p class="section-sub">Node.js 20+ yeterli — Supabase anahtarı olmadan DEMO modunda açılır</p>
+      <pre><span class="c"># depoyu klonla</span>
+<span class="k">git</span> clone https://github.com/R0YC0LD/RapLab.git
+<span class="k">cd</span> RapLab
+
+<span class="c"># bağımlılıkları kur ve başlat</span>
+<span class="k">npm</span> install
+<span class="k">npm</span> run dev
+
+<span class="c"># http://localhost:3000 → "DEMO MODU" bandıyla açılır</span></pre>
+    </div>
+  </section>
+
+  <section class="alt">
+    <div class="container">
+      <h2 class="section-title display">Canlıya Alma</h2>
+      <p class="section-sub">Gerçek kayıt/giriş ve veritabanı için — ayrıntılar repodaki <a href="https://github.com/R0YC0LD/RapLab/blob/main/KURULUM.md">KURULUM.md</a> dosyasında</p>
+      <div class="steps">
+        <div class="step"><p><strong>Supabase projesi aç</strong> (ücretsiz) ve <em>Project URL</em>, <em>anon</em>, <em>service_role</em> anahtarlarını kopyala.</p></div>
+        <div class="step"><p><strong>Vercel'e aktar:</strong> yukarıdaki "Vercel'de Canlıya Al" butonuna tıkla, üç anahtarı Environment Variables bölümüne gir.</p></div>
+        <div class="step"><p><strong>Şemayı yükle:</strong> <code>npx supabase db push</code> — tablolar, trigger'lar ve RLS politikaları otomatik kurulur.</p></div>
+        <div class="step"><p><strong>Yayında:</strong> DEMO bandı kaybolur; kayıt, giriş, sanatçı başvurusu ve paneller gerçek veriyle çalışır.</p></div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <p class="display">RAPLAB</p>
+  <p>Türkçe rap kültürü için tasarlanmış sanatçı–topluluk platformu.<br>
+  Bu tanıtım sayfasındaki bütün sanatçılar kurgusaldır.</p>
+</footer>
+</body>
+</html>
