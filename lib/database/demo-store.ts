@@ -13,6 +13,9 @@ import type {
   ArtistMember,
   AuditLog,
   FeatureFlags,
+  FanArtLike,
+  FanArtPost,
+  FanVerification,
   Notification,
   Post,
   PostLike,
@@ -26,6 +29,9 @@ import {
   demoArtists,
   demoAuditLogs,
   demoFeatureFlags,
+  demoFanArtLikes,
+  demoFanArtPosts,
+  demoFanVerifications,
   demoFollows,
   demoLikes,
   demoMedia,
@@ -49,6 +55,9 @@ export interface DemoState {
   auditLogs: AuditLog[];
   notifications: Notification[];
   featureFlags: FeatureFlags;
+  fanVerifications: FanVerification[];
+  fanArtPosts: FanArtPost[];
+  fanArtLikes: FanArtLike[];
   raplineOrder: string[];
   heroArtistId: string;
 }
@@ -69,6 +78,9 @@ function initialState(): DemoState {
     auditLogs: clone(demoAuditLogs),
     notifications: clone(demoNotifications),
     featureFlags: clone(demoFeatureFlags),
+    fanVerifications: clone(demoFanVerifications),
+    fanArtPosts: clone(demoFanArtPosts),
+    fanArtLikes: clone(demoFanArtLikes),
     raplineOrder: ["a-rayvold", "a-karga", "a-semak", "a-golge06", "a-nefes", "a-beton"],
     heroArtistId: "a-rayvold",
   };

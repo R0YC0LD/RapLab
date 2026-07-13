@@ -6,8 +6,9 @@
  */
 
 import { useRouter } from "next/navigation";
-import { useRef, useState } from "react";
+import { startTransition, useRef, useState } from "react";
 import { Button } from "@/components/ui/Button";
+import { uploadFormWithTimeout, validateImageSelection } from "@/lib/uploads/client";
 
 const KINDS = [
   { key: "profile", label: "Profil fotoğrafı", hint: "Kare, en az 400×400" },
@@ -26,35 +27,44 @@ export function ArtistImageUploader({
 }) {
   const router = useRouter();
   const inputRef = useRef<HTMLInputElement>(null);
-  const [activeKind, setActiveKind] = useState<string | null>(null);
+  const activeKindRef = useRef<string | null>(null);
   const [busy, setBusy] = useState<string | null>(null);
   const [message, setMessage] = useState<{ tone: "ok" | "err"; text: string } | null>(null);
+  const [previews, setPreviews] = useState(current);
 
   function pick(kind: string) {
-    setActiveKind(kind);
+    activeKindRef.current = kind;
     setMessage(null);
     inputRef.current?.click();
   }
 
   async function upload(file: File) {
+    const activeKind = activeKindRef.current;
     if (!activeKind) return;
+    const validationError = validateImageSelection(file, 12 * 1024 * 1024);
+    if (validationError) {
+      setMessage({ tone: "err", text: validationError });
+      return;
+    }
     setBusy(activeKind);
     const fd = new FormData();
     fd.append("file", file);
     fd.append("kind", activeKind);
     try {
-      const res = await fetch(`/api/artists/${artistId}/image`, { method: "POST", body: fd });
-      const json = await res.json();
+      const { json } = await uploadFormWithTimeout(`/api/artists/${artistId}/image`, fd, 60_000);
       if (json.success) {
-        setMessage({ tone: "ok", text: "Görsel güncellendi ✓" });
-        router.refresh();
+        setPreviews((value) => ({ ...value, [activeKind]: json.data.path }));
+        setMessage({ tone: "ok", text: "Görsel güncellendi." });
+        startTransition(() => router.refresh());
       } else {
-        setMessage({ tone: "err", text: json.error?.field_errors?.file ?? json.error?.message ?? "Yükleme başarısız." });
+        const requestId = json.request_id ? ` (${json.request_id})` : "";
+        setMessage({ tone: "err", text: `${json.error?.field_errors?.file ?? json.error?.message ?? "Yükleme başarısız."}${requestId}` });
       }
-    } catch {
-      setMessage({ tone: "err", text: "Bağlantı sorunu." });
+    } catch (error) {
+      setMessage({ tone: "err", text: error instanceof Error ? error.message : "Bağlantı sorunu." });
     } finally {
       setBusy(null);
+      activeKindRef.current = null;
     }
   }
 
@@ -84,7 +94,7 @@ export function ArtistImageUploader({
       />
       <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))", gap: "var(--space-4)" }}>
         {KINDS.map((k) => {
-          const src = current[k.key];
+          const src = previews[k.key];
           return (
             <div key={k.key} style={{ display: "grid", gap: 8 }}>
               <div

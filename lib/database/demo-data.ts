@@ -13,6 +13,9 @@ import type {
   ArtistMember,
   AuditLog,
   FeatureFlags,
+  FanArtLike,
+  FanArtPost,
+  FanVerification,
   Notification,
   Post,
   PostLike,
@@ -621,6 +624,59 @@ export const demoFollows: ArtistFollow[] = [
   { artist_id: "a-rayvold", user_id: "u-demo-user", created_at: d(90) },
   { artist_id: "a-golge06", user_id: "u-demo-user", created_at: d(60) },
   { artist_id: "a-semak", user_id: "u-demo-user", created_at: d(20) },
+];
+
+/* ---------- Sanatsal fan galerisi ---------- */
+
+export const demoFanVerifications: FanVerification[] = [
+  {
+    id: "fv-demo-user",
+    user_id: "u-demo-user",
+    related_artist_id: "a-rayvold",
+    sample_art_path: "u-demo-user/sample.svg",
+    voice_declaration_path: "u-demo-user/fan-beyani.webm",
+    art_created_on: d(12).slice(0, 10),
+    ownership_declaration: true,
+    status: "approved",
+    review_note: null,
+    reviewed_by: "u-demo-admin",
+    reviewed_at: d(10),
+    created_at: d(12),
+    updated_at: d(10),
+  },
+];
+
+export const demoFanArtPosts: FanArtPost[] = [
+  {
+    id: "fa-rayvold-night",
+    fan_user_id: "u-demo-user",
+    artist_id: "a-rayvold",
+    image_path: "/demo/posts/rayvold-studio.svg",
+    caption: "Gece Trafiği kayıtlarının bende bıraktığı şehir hissi.",
+    hashtags: ["rayvold", "gecetrafiği", "fanart"],
+    like_count: 284,
+    status: "published",
+    created_at: h(7),
+    updated_at: h(7),
+    deleted_at: null,
+  },
+  {
+    id: "fa-semak-coast",
+    fan_user_id: "u-applicant",
+    artist_id: "a-semak",
+    image_path: "/demo/posts/semak-kiyi.svg",
+    caption: "KIYI için dijital kapak yorumu.",
+    hashtags: ["semak", "kıyı", "dijitalçizim"],
+    like_count: 173,
+    status: "published",
+    created_at: d(2),
+    updated_at: d(2),
+    deleted_at: null,
+  },
+];
+
+export const demoFanArtLikes: FanArtLike[] = [
+  { post_id: "fa-semak-coast", user_id: "u-demo-user", created_at: h(20) },
 ];
 
 /* ---------- Sanatçı başvuruları ---------- */

@@ -17,6 +17,7 @@ const NAV: { group: string; items: { href: string; label: string }[] }[] = [
     group: "Topluluk",
     items: [
       { href: "/control-center/basvurular", label: "Sanatçı Başvuruları" },
+      { href: "/control-center/fan-dogrulamalari", label: "Fan Doğrulamaları" },
       { href: "/control-center/sanatcilar", label: "Sanatçılar" },
       { href: "/control-center/kullanicilar", label: "Kullanıcılar" },
       { href: "/control-center/gonderiler", label: "Gönderiler" },

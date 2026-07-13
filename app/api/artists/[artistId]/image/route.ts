@@ -11,7 +11,8 @@ import { createSupabaseAdminClient } from "@/lib/database/supabase-server";
 import { isDemoMode } from "@/lib/env";
 import { apiFailure, apiSuccess, ApiError, ErrorCodes } from "@/lib/errors";
 import { memberHasPermission, roleAtLeast } from "@/lib/permissions";
-import { AVATARS_BUCKET } from "@/lib/storage";
+import { checkRateLimit } from "@/lib/rate-limit";
+import { AVATARS_BUCKET, extensionForMime, publicStoragePath } from "@/lib/storage";
 import { IMAGE_MIME_TYPES, IMAGE_MAX_BYTES } from "@/lib/validation";
 
 const KIND_COLUMN: Record<string, string> = {
@@ -27,6 +28,7 @@ export async function POST(
   try {
     const { artistId } = await params;
     const user = await requireUser();
+    if (!checkRateLimit("media_upload", user.id)) throw new ApiError(ErrorCodes.RATE_LIMITED);
     if (!roleAtLeast(user.profile.role, "admin")) {
       const membership = await getMembership(artistId, user.id);
       if (!memberHasPermission(membership, "manage_profile")) {
@@ -51,10 +53,17 @@ export async function POST(
     }
     if (file.size > IMAGE_MAX_BYTES) throw new ApiError(ErrorCodes.FILE_TOO_LARGE);
 
-    const ext = file.type.split("/")[1] ?? "jpg";
+    const ext = extensionForMime(file.type, "jpg");
     const path = `artists/${artistId}/${kind}-${globalThis.crypto.randomUUID()}.${ext}`;
 
     const admin = createSupabaseAdminClient();
+    const { data: previousArtist, error: previousError } = await admin
+      .from("artists")
+      .select(column)
+      .eq("id", artistId)
+      .single();
+    if (previousError || !previousArtist) throw new ApiError(ErrorCodes.POST_NOT_FOUND);
+
     const bytes = new Uint8Array(await file.arrayBuffer());
     const { error: uploadError } = await admin.storage
       .from(AVATARS_BUCKET)
@@ -62,13 +71,28 @@ export async function POST(
     if (uploadError) throw new ApiError(ErrorCodes.UPLOAD_FAILED);
 
     const { data: pub } = admin.storage.from(AVATARS_BUCKET).getPublicUrl(path);
-    const { error: updateError } = await admin
+    const { data: updated, error: updateError } = await admin
       .from("artists")
       .update({ [column]: pub.publicUrl })
-      .eq("id", artistId);
-    if (updateError) throw new ApiError(ErrorCodes.UNKNOWN_ERROR);
+      .eq("id", artistId)
+      .select(column)
+      .single();
+    if (updateError || !updated) {
+      await admin.storage.from(AVATARS_BUCKET).remove([path]);
+      throw new ApiError(ErrorCodes.UNKNOWN_ERROR);
+    }
 
-    return NextResponse.json(apiSuccess({ path: pub.publicUrl, kind }));
+    const previousUrl = (previousArtist as unknown as Record<string, unknown>)[column];
+    const previousPath = publicStoragePath(
+      typeof previousUrl === "string" ? previousUrl : null,
+      AVATARS_BUCKET
+    );
+    if (previousPath?.startsWith(`artists/${artistId}/`) && previousPath !== path) {
+      const { error: cleanupError } = await admin.storage.from(AVATARS_BUCKET).remove([previousPath]);
+      if (cleanupError) console.warn("[raplab][artist-image-cleanup] Eski sanatçı görseli temizlenemedi.");
+    }
+
+    return NextResponse.json(apiSuccess({ path: (updated as unknown as Record<string, unknown>)[column], kind }));
   } catch (error) {
     const { body, status } = apiFailure(error);
     return NextResponse.json(body, { status });

@@ -10,7 +10,7 @@ import { createSupabaseAdminClient } from "@/lib/database/supabase-server";
 import { isDemoMode } from "@/lib/env";
 import { apiFailure, apiSuccess, ApiError, ErrorCodes } from "@/lib/errors";
 import { checkRateLimit } from "@/lib/rate-limit";
-import { AVATARS_BUCKET } from "@/lib/storage";
+import { AVATARS_BUCKET, extensionForMime, publicStoragePath } from "@/lib/storage";
 import { IMAGE_MIME_TYPES } from "@/lib/validation";
 
 const AVATAR_MAX_BYTES = 5 * 1024 * 1024; // 5 MB
@@ -36,11 +36,18 @@ export async function POST(req: NextRequest) {
       throw new ApiError(ErrorCodes.FILE_TOO_LARGE, { file: "Profil fotoğrafı en fazla 5 MB olabilir." });
     }
 
-    const ext = file.type.split("/")[1] ?? "jpg";
+    const ext = extensionForMime(file.type, "jpg");
     // 21.1: orijinal ad yerine UUID
     const path = `${user.id}/${globalThis.crypto.randomUUID()}.${ext}`;
 
     const admin = createSupabaseAdminClient();
+    const { data: previousProfile, error: previousError } = await admin
+      .from("profiles")
+      .select("avatar_path")
+      .eq("id", user.id)
+      .single();
+    if (previousError) throw new ApiError(ErrorCodes.UNKNOWN_ERROR);
+
     const bytes = new Uint8Array(await file.arrayBuffer());
     const { error: uploadError } = await admin.storage
       .from(AVATARS_BUCKET)
@@ -48,13 +55,24 @@ export async function POST(req: NextRequest) {
     if (uploadError) throw new ApiError(ErrorCodes.UPLOAD_FAILED);
 
     const { data: pub } = admin.storage.from(AVATARS_BUCKET).getPublicUrl(path);
-    const { error: updateError } = await admin
+    const { data: updated, error: updateError } = await admin
       .from("profiles")
       .update({ avatar_path: pub.publicUrl })
-      .eq("id", user.id);
-    if (updateError) throw new ApiError(ErrorCodes.UNKNOWN_ERROR);
+      .eq("id", user.id)
+      .select("avatar_path")
+      .single();
+    if (updateError || !updated) {
+      await admin.storage.from(AVATARS_BUCKET).remove([path]);
+      throw new ApiError(ErrorCodes.UNKNOWN_ERROR);
+    }
 
-    return NextResponse.json(apiSuccess({ avatar_path: pub.publicUrl }));
+    const previousPath = publicStoragePath(previousProfile.avatar_path, AVATARS_BUCKET);
+    if (previousPath?.startsWith(`${user.id}/`) && previousPath !== path) {
+      const { error: cleanupError } = await admin.storage.from(AVATARS_BUCKET).remove([previousPath]);
+      if (cleanupError) console.warn("[raplab][avatar-cleanup] Eski profil görseli temizlenemedi.");
+    }
+
+    return NextResponse.json(apiSuccess({ avatar_path: updated.avatar_path }));
   } catch (error) {
     const { body, status } = apiFailure(error);
     return NextResponse.json(body, { status });

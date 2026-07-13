@@ -59,7 +59,7 @@ export default async function AccountPage() {
             verified={user.profile.email_verified}
             provider={user.auth_provider ?? "email"}
           />
-          <AvatarUploader demoMode={isDemoMode()} />
+          <AvatarUploader demoMode={isDemoMode()} currentAvatar={user.profile.avatar_path} />
           <UsernameChanger currentUsername={user.profile.username} displayName={user.profile.display_name} />
         </div>
         {!user.profile.email_verified && (

@@ -8,7 +8,8 @@
  * - Ses beyanı: "RapLab'e sanatçı üyeliği yapmak istiyorum" kaydı (teyit)
  */
 
-import { useEffect, useRef, useState } from "react";
+import { useState } from "react";
+import { VoiceDeclarationRecorder } from "@/components/media/VoiceDeclarationRecorder";
 import { Button } from "@/components/ui/Button";
 
 const inputStyle: React.CSSProperties = {
@@ -26,151 +27,6 @@ const PROCESS_STEPS = [
   ["Karar", "Onay yalnızca yönetici tarafından verilir. Ret durumunda gerekçesi sana açıkça iletilir; ek bilgi istenirse bildirim alırsın."],
   ["Profil açılışı", "Onayla birlikte doğrulanmış sanatçı profilin ve Artist Studio panelin otomatik açılır; bildirim gönderilir."],
 ] as const;
-
-const PREFERRED_RECORDING_TYPES = [
-  "audio/webm;codecs=opus",
-  "audio/mp4;codecs=mp4a.40.2",
-  "audio/mp4",
-  "audio/webm",
-] as const;
-
-/* ---------- Ses beyanı kaydedici ---------- */
-
-function VoiceRecorder({
-  onRecorded,
-  disabled,
-}: {
-  onRecorded: (blob: Blob | null) => void;
-  disabled: boolean;
-}) {
-  const [state, setState] = useState<"idle" | "recording" | "recorded" | "unsupported" | "denied">("idle");
-  const [seconds, setSeconds] = useState(0);
-  const [audioUrl, setAudioUrl] = useState<string | null>(null);
-  const recorderRef = useRef<MediaRecorder | null>(null);
-  const chunksRef = useRef<Blob[]>([]);
-  const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
-
-  useEffect(() => {
-    if (typeof MediaRecorder === "undefined") {
-      const unsupportedTimer = window.setTimeout(() => setState("unsupported"), 0);
-      return () => window.clearTimeout(unsupportedTimer);
-    }
-    return () => {
-      if (timerRef.current) clearInterval(timerRef.current);
-      if (audioUrl) URL.revokeObjectURL(audioUrl);
-      recorderRef.current?.stream.getTracks().forEach((t) => t.stop());
-    };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  function stop() {
-    if (timerRef.current) clearInterval(timerRef.current);
-    if (recorderRef.current?.state === "recording") recorderRef.current.stop();
-  }
-
-  async function start() {
-    try {
-      const stream = await navigator.mediaDevices.getUserMedia({
-        audio: {
-          channelCount: { ideal: 1 },
-          sampleRate: { ideal: 48_000 },
-          echoCancellation: true,
-          noiseSuppression: true,
-          autoGainControl: true,
-        },
-      });
-      const mimeType = PREFERRED_RECORDING_TYPES.find((type) =>
-        MediaRecorder.isTypeSupported(type)
-      );
-      const recorder = new MediaRecorder(stream, {
-        ...(mimeType ? { mimeType } : {}),
-        audioBitsPerSecond: 256_000,
-      });
-      recorderRef.current = recorder;
-      chunksRef.current = [];
-      recorder.ondataavailable = (e) => {
-        if (e.data.size > 0) chunksRef.current.push(e.data);
-      };
-      recorder.onstop = () => {
-        const blob = new Blob(chunksRef.current, { type: recorder.mimeType || "audio/webm" });
-        const url = URL.createObjectURL(blob);
-        setAudioUrl(url);
-        onRecorded(blob);
-        setState("recorded");
-        stream.getTracks().forEach((t) => t.stop());
-      };
-      recorder.start(250);
-      setSeconds(0);
-      timerRef.current = setInterval(() => {
-        setSeconds((s) => {
-          if (s >= 29) stop(); // en fazla 30 sn beyan
-          return s + 1;
-        });
-      }, 1000);
-      setState("recording");
-    } catch {
-      setState("denied");
-    }
-  }
-
-  function reset() {
-    if (audioUrl) URL.revokeObjectURL(audioUrl);
-    setAudioUrl(null);
-    onRecorded(null);
-    setState("idle");
-    setSeconds(0);
-  }
-
-  if (state === "unsupported") {
-    return (
-      <p style={{ color: "var(--color-warning)", fontSize: "var(--font-sm)" }}>
-        Tarayıcın ses kaydını desteklemiyor; güncel bir tarayıcı kullan.
-      </p>
-    );
-  }
-
-  return (
-    <div style={{ display: "grid", gap: "var(--space-3)" }}>
-      <p style={{ fontSize: "var(--font-sm)", color: "var(--color-text-secondary)" }}>
-        Mikrofona şu cümleyi söyle:{" "}
-        <strong style={{ color: "var(--color-text-primary)" }}>
-          &quot;RapLab&apos;e sanatçı üyeliği yapmak istiyorum.&quot;
-        </strong>{" "}
-        (en fazla 30 sn)
-      </p>
-      {state === "denied" && (
-        <p role="alert" style={{ color: "var(--color-danger)", fontSize: "var(--font-sm)" }}>
-          Mikrofon izni verilmedi. Tarayıcı ayarlarından izin verip tekrar dene.
-        </p>
-      )}
-      <div style={{ display: "flex", gap: "var(--space-3)", alignItems: "center", flexWrap: "wrap" }}>
-        {state !== "recording" && state !== "recorded" && (
-          <Button type="button" variant="secondary" onClick={start} disabled={disabled}>
-            🎙 Kaydı başlat
-          </Button>
-        )}
-        {state === "recording" && (
-          <>
-            <Button type="button" variant="danger" onClick={stop}>
-              ⏹ Durdur ({seconds} sn)
-            </Button>
-            <span aria-live="polite" style={{ color: "var(--color-danger)", fontSize: "var(--font-sm)" }}>
-              ● Kayıt yapılıyor…
-            </span>
-          </>
-        )}
-        {state === "recorded" && audioUrl && (
-          <>
-            <audio controls src={audioUrl} style={{ height: 40, maxWidth: "100%" }} />
-            <Button type="button" variant="ghost" onClick={reset}>
-              Yeniden kaydet
-            </Button>
-          </>
-        )}
-      </div>
-    </div>
-  );
-}
 
 /* ---------- Ana form ---------- */
 
@@ -431,7 +287,11 @@ export function ApplicationForm({ demoMode }: { demoMode: boolean }) {
       {/* Ses beyanı */}
       <div style={{ padding: "var(--space-5)", borderRadius: "var(--radius-md)", border: "1px dashed var(--color-border-strong)" }}>
         <p style={{ fontWeight: 600, marginBottom: 6 }}>Sesli beyan *</p>
-        <VoiceRecorder onRecorded={setVoiceBlob} disabled={demoMode} />
+        <VoiceDeclarationRecorder
+          prompt="RapLab'e sanatçı üyeliği yapmak istiyorum."
+          onRecorded={setVoiceBlob}
+          disabled={demoMode}
+        />
       </div>
 
       {demoMode && (

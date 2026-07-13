@@ -12,6 +12,7 @@ import {
   extractSafeLinks,
   mediaKindForMime,
   mediaStoragePath,
+  normalizeHashtags,
   POST_BODY_MAX,
   RESERVED_USERNAMES,
   slugify,
@@ -19,6 +20,13 @@ import {
   validateUsername,
   VIDEO_MAX_SECONDS,
 } from "@/lib/validation";
+
+describe("Sanatsal hashtag normalizasyonu", () => {
+  it("işaretleri temizler, Türkçe etiketleri korur ve tekrarları kaldırır", () => {
+    expect(normalizeHashtags("#DijitalÇizim #dijitalçizim, #SemaK geçersiz-etiket"))
+      .toEqual(["dijitalçizim", "semak"]);
+  });
+});
 
 describe("kullanıcı adı doğrulama (11.2)", () => {
   it("geçerli adları kabul eder", () => {

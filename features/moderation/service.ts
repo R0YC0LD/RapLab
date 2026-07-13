@@ -168,7 +168,14 @@ export async function approveApplication(
     const s = demoState();
     const app = s.applications.find((a) => a.id === applicationId);
     if (!app) throw new ApiError(ErrorCodes.POST_NOT_FOUND);
-    if (app.status === "approved") throw new ApiError(ErrorCodes.VALIDATION_FAILED);
+    if (app.status === "approved") {
+      const existing = s.artists.find(
+        (artist) => artist.id === app.approved_artist_id ||
+          (artist.owner_user_id === app.user_id && artist.stage_name === app.stage_name)
+      );
+      if (!existing) throw new ApiError(ErrorCodes.UNKNOWN_ERROR);
+      return { artistId: existing.id, slug: existing.slug };
+    }
 
     let slug = slugify(app.stage_name);
     if (s.artists.some((a) => a.slug === slug)) slug = `${slug}-${Date.now() % 1000}`;
@@ -220,6 +227,7 @@ export async function approveApplication(
       updated_at: nowIso,
     });
     app.status = "approved";
+    app.approved_artist_id = artistId;
     app.updated_at = nowIso;
 
     const owner = s.profiles.find((p) => p.id === app.user_id);
@@ -258,7 +266,37 @@ export async function approveApplication(
     p_actor_id: viewer.id,
     p_request_id: requestId,
   });
-  if (error) throw new ApiError(ErrorCodes.UNKNOWN_ERROR);
+  if (error) {
+    console.error(`[raplab][artist-approval][${requestId}]`, {
+      code: error.code,
+      message: error.message,
+      details: error.details,
+      hint: error.hint,
+    });
+    if (error.code === "42501" || error.message.includes("PERMISSION_DENIED")) {
+      throw new ApiError(ErrorCodes.PERMISSION_DENIED);
+    }
+    if (error.message.includes("APPLICATION_NOT_FOUND")) {
+      throw new ApiError(ErrorCodes.POST_NOT_FOUND, undefined, "Sanatçı başvurusu bulunamadı.");
+    }
+    if (error.message.includes("INVALID_APPLICATION_STATUS")) {
+      throw new ApiError(ErrorCodes.VALIDATION_FAILED, undefined, "Bu başvurunun mevcut durumu onaylanamaz.");
+    }
+    throw new ApiError(
+      ErrorCodes.UNKNOWN_ERROR,
+      undefined,
+      `Onay işlemi tamamlanamadı. Destek kodu: ${requestId}`
+    );
+  }
+  if (
+    !data ||
+    typeof data !== "object" ||
+    typeof (data as Record<string, unknown>).artistId !== "string" ||
+    typeof (data as Record<string, unknown>).slug !== "string"
+  ) {
+    console.error(`[raplab][artist-approval][${requestId}] RPC geçersiz sonuç döndürdü.`);
+    throw new ApiError(ErrorCodes.UNKNOWN_ERROR, undefined, `Onay sonucu doğrulanamadı. Destek kodu: ${requestId}`);
+  }
   return data as { artistId: string; slug: string };
 }
 

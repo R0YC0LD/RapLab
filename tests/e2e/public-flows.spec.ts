@@ -44,6 +44,14 @@ test.describe("ziyaretçi (4.1)", () => {
     await page.getByRole("searchbox").fill("karga");
     await expect(page.getByText(/Sanatçılar \(/)).toBeVisible({ timeout: 5000 });
   });
+
+  test("Sanatsal galerisi açılır ve ziyaretçi beğenide girişe yönlenir", async ({ page }) => {
+    await page.goto("/sanatsal");
+    await expect(page.getByRole("heading", { name: "Sanatsal" })).toBeVisible();
+    await expect(page.getByText(/@dinleyici\.06/).first()).toBeVisible();
+    await page.getByRole("button", { name: "Beğen" }).first().click();
+    await expect(page).toHaveURL(/\/giris/);
+  });
 });
 
 test.describe("demo kullanıcı etkileşimleri", () => {
@@ -104,6 +112,12 @@ test.describe("sanatçı paneli (13)", () => {
     await page.getByRole("textbox").nth(1).fill("a".repeat(801));
     await expect(page.getByRole("button", { name: "Yayımla" })).toBeDisabled();
   });
+
+  test("kendisiyle ilişkilendirilen fan sanatı Studio'da görünür", async ({ page }) => {
+    await page.goto("/artist-studio/fan-sanati");
+    await expect(page.getByRole("heading", { name: "Fan Sanatı" })).toBeVisible();
+    await expect(page.getByText(/@dinleyici\.06/).first()).toBeVisible();
+  });
 });
 
 test.describe("yönetici paneli (14)", () => {
@@ -129,5 +143,11 @@ test.describe("yönetici paneli (14)", () => {
     await page.goto("/control-center/audit-log");
     await expect(page.getByText("Audit Log").first()).toBeVisible();
     await expect(page.getByRole("button", { name: /sil/i })).toHaveCount(0);
+  });
+
+  test("fan doğrulamaları yönetim ekranında listelenir", async ({ page }) => {
+    await page.goto("/control-center/fan-dogrulamalari");
+    await expect(page.getByRole("heading", { name: "Fan Doğrulamaları" })).toBeVisible();
+    await expect(page.getByText("@dinleyici.06")).toBeVisible();
   });
 });

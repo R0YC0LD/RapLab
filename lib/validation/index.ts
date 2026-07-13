@@ -233,6 +233,27 @@ export function mediaStoragePath(artistId: string, postId: string, mediaId: stri
   return `artists/${artistId}/posts/${postId}/${mediaId}.${ext.replace(/^\./, "")}`;
 }
 
+/* ---------- Sanatsal ---------- */
+
+export const FAN_ART_CAPTION_MAX = 600;
+export const FAN_ART_HASHTAG_MAX = 10;
+export const FAN_ART_HASHTAG_REGEX = /^[\p{L}\p{N}_]{2,30}$/u;
+
+export function normalizeHashtags(input: string | string[]): string[] {
+  const parts = Array.isArray(input) ? input : input.split(/[\s,]+/);
+  return [...new Set(
+    parts
+      .map((tag) => tag.trim().replace(/^#+/, "").toLocaleLowerCase("tr-TR"))
+      .filter((tag) => FAN_ART_HASHTAG_REGEX.test(tag))
+  )].slice(0, FAN_ART_HASHTAG_MAX);
+}
+
+export const fanArtMetadataSchema = z.object({
+  artist_id: z.string().uuid("Geçerli bir sanatçı seç."),
+  caption: z.string().max(FAN_ART_CAPTION_MAX).optional().default(""),
+  hashtags: z.union([z.string(), z.array(z.string())]).transform(normalizeHashtags),
+});
+
 /* ---------- 25. Arama ---------- */
 
 export const SEARCH_MIN_CHARS = 2;

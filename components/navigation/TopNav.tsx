@@ -18,6 +18,7 @@ import styles from "./nav.module.css";
 const NAV_LINKS = [
   { href: "/kesfet", label: "Keşfet" },
   { href: "/sanatcilar", label: "Sanatçılar" },
+  { href: "/sanatsal", label: "Sanatsal" },
   { href: "/son-paylasimlar", label: "Son Paylaşımlar" },
   { href: "/yaklasanlar", label: "Yaklaşanlar" },
   { href: "/raplab-ozel", label: "RapLab Özel" },

@@ -21,12 +21,12 @@ const ITEMS = [
     ),
   },
   {
-    href: "/kesfet",
-    label: "Keşfet",
+    href: "/sanatsal",
+    label: "Sanatsal",
     icon: (
       <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
-        <circle cx="10" cy="10" r="8" stroke="currentColor" strokeWidth="1.8" />
-        <path d="m13 7-1.8 4.2L7 13l1.8-4.2L13 7Z" stroke="currentColor" strokeWidth="1.5" strokeLinejoin="round" />
+        <path d="M3 15.5 7.5 11l3 3L17 7.5V17H3v-1.5Z" stroke="currentColor" strokeWidth="1.7" strokeLinejoin="round" />
+        <circle cx="7" cy="6" r="2" stroke="currentColor" strokeWidth="1.7" />
       </svg>
     ),
   },

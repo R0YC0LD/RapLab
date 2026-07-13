@@ -109,8 +109,12 @@ export type NotificationType =
   | "artist_countdown_started"
   | "artist_application_update"
   | "artist_team_invite"
+  | "fan_verification_update"
+  | "fan_art_related"
   | "moderation_warning"
   | "system_announcement";
+
+export type FanVerificationStatus = "pending" | "approved" | "rejected";
 
 /* ---------- 15.9 Rapor ---------- */
 
@@ -340,12 +344,62 @@ export interface ArtistApplication {
   /** Kimlik belgesi tek seferlik görüntüleme kilidi */
   identity_viewed_at: string | null;
   identity_viewed_by: string | null;
+  approved_artist_id?: string | null;
   rights_declaration: boolean;
   additional_notes: string | null;
   status: ApplicationStatus;
   review_note: string | null;
   created_at: string;
   updated_at: string;
+}
+
+/* ---------- Sanatsal / fan toplulugu ---------- */
+
+export interface FanVerification {
+  id: string;
+  user_id: string;
+  related_artist_id: string;
+  sample_art_path: string;
+  voice_declaration_path: string;
+  art_created_on: string;
+  ownership_declaration: boolean;
+  status: FanVerificationStatus;
+  review_note: string | null;
+  reviewed_by: string | null;
+  reviewed_at: string | null;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface FanArtPost {
+  id: string;
+  fan_user_id: string;
+  artist_id: string;
+  image_path: string;
+  caption: string | null;
+  hashtags: string[];
+  like_count: number;
+  status: "published" | "hidden" | "deleted";
+  created_at: string;
+  updated_at: string;
+  deleted_at: string | null;
+}
+
+export interface FanArtLike {
+  post_id: string;
+  user_id: string;
+  created_at: string;
+}
+
+export interface FanArtFeedItem extends FanArtPost {
+  fan: Pick<Profile, "username" | "display_name" | "avatar_path">;
+  artist: Pick<Artist, "id" | "stage_name" | "slug" | "profile_image_path">;
+  liked_by_me: boolean;
+}
+
+export interface FanVerificationWithDetails extends FanVerification {
+  fan: Pick<Profile, "username" | "display_name" | "avatar_path">;
+  artist: Pick<Artist, "id" | "stage_name" | "slug">;
 }
 
 /* ---------- 14.7 Özellik bayrakları ---------- */

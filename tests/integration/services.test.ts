@@ -10,6 +10,7 @@ import { followArtist, unfollowArtist } from "@/features/follows/service";
 import { canTransition, createPost, updatePostStatus } from "@/features/posts/service";
 import { approveApplication, updateFeatureFlag } from "@/features/moderation/service";
 import { createApplication } from "@/features/applications/service";
+import { addFanArtLike, listFanArt, reviewFanVerification } from "@/features/fan-art/service";
 import { demoState, resetDemoState } from "@/lib/database/demo-store";
 import { ApiError } from "@/lib/errors";
 import type { SessionUser } from "@/types";
@@ -174,6 +175,15 @@ describe("sanatçı başvurusu ve onayı (12)", () => {
     await expect(approveApplication("app-1", mod)).rejects.toMatchObject({ code: "PERMISSION_DENIED" });
   });
 
+  it("aynı başvuru tekrar onaylandığında ikinci sanatçı oluşturmaz", async () => {
+    const admin = sessionFor("u-demo-admin");
+    const before = demoState().artists.length;
+    const first = await approveApplication("app-1", admin);
+    const second = await approveApplication("app-1", admin);
+    expect(second).toEqual(first);
+    expect(demoState().artists).toHaveLength(before + 1);
+  });
+
   it("hak beyanı olmadan başvuru reddedilir", async () => {
     const applicant = sessionFor("u-demo-user");
     await expect(
@@ -191,6 +201,32 @@ describe("sanatçı başvurusu ve onayı (12)", () => {
         applicant
       )
     ).rejects.toMatchObject({ code: "VALIDATION_FAILED" });
+  });
+});
+
+describe("Sanatsal fan akışı", () => {
+  it("yayındaki çalışmaları güvenli fan ve sanatçı DTO'suyla listeler", async () => {
+    const items = await listFanArt("u-demo-user");
+    expect(items.length).toBeGreaterThan(0);
+    expect(items[0].fan.username).toBeTruthy();
+    expect(items[0].artist.slug).toBeTruthy();
+  });
+
+  it("fan çalışması beğenisini tekil tutar", async () => {
+    const user = sessionFor("u-demo-user");
+    const result = await addFanArtLike("fa-rayvold-night", user);
+    expect(result.liked).toBe(true);
+    await expect(addFanArtLike("fa-rayvold-night", user)).rejects.toMatchObject({ code: "DUPLICATE_LIKE" });
+  });
+
+  it("fan kararını yalnızca yönetici verir ve audit yazar", async () => {
+    const state = demoState();
+    state.fanVerifications[0].status = "pending";
+    await expect(reviewFanVerification("fv-demo-user", "approved", "", sessionFor("u-demo-mod")))
+      .rejects.toMatchObject({ code: "PERMISSION_DENIED" });
+    await reviewFanVerification("fv-demo-user", "approved", "", sessionFor("u-demo-admin"));
+    expect(state.fanVerifications[0].status).toBe("approved");
+    expect(state.auditLogs.some((log) => log.action === "fan_verification.approved")).toBe(true);
   });
 });
 

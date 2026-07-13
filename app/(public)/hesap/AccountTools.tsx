@@ -10,8 +10,9 @@
  */
 
 import { useRouter } from "next/navigation";
-import { useEffect, useRef, useState } from "react";
+import { startTransition, useEffect, useRef, useState } from "react";
 import { Button } from "@/components/ui/Button";
+import { uploadFormWithTimeout, validateImageSelection } from "@/lib/uploads/client";
 import { SEARCH_DEBOUNCE_MS } from "@/lib/validation";
 
 export function VerifyEmailButton({
@@ -106,35 +107,60 @@ export function VerifyEmailButton({
   );
 }
 
-export function AvatarUploader({ demoMode }: { demoMode: boolean }) {
+export function AvatarUploader({
+  demoMode,
+  currentAvatar,
+}: {
+  demoMode: boolean;
+  currentAvatar: string | null;
+}) {
   const router = useRouter();
   const inputRef = useRef<HTMLInputElement>(null);
-  const [state, setState] = useState<"idle" | "busy" | "error">("idle");
+  const [state, setState] = useState<"idle" | "busy" | "done" | "error">("idle");
   const [message, setMessage] = useState<string | null>(null);
+  const [preview, setPreview] = useState<string | null>(currentAvatar);
 
   async function upload(file: File) {
+    const validationError = validateImageSelection(file, 5 * 1024 * 1024);
+    if (validationError) {
+      setState("error");
+      setMessage(validationError);
+      return;
+    }
     setState("busy");
     setMessage(null);
     const fd = new FormData();
     fd.append("file", file);
     try {
-      const res = await fetch("/api/profile/avatar", { method: "POST", body: fd });
-      const json = await res.json();
+      const { json } = await uploadFormWithTimeout("/api/profile/avatar", fd);
       if (json.success) {
-        setState("idle");
-        router.refresh();
+        setPreview(json.data.avatar_path);
+        setState("done");
+        setMessage("Profil fotoğrafın güncellendi.");
+        startTransition(() => router.refresh());
       } else {
         setState("error");
-        setMessage(json.error?.field_errors?.file ?? json.error?.message ?? "Yükleme başarısız.");
+        const requestId = json.request_id ? ` (${json.request_id})` : "";
+        setMessage(`${json.error?.field_errors?.file ?? json.error?.message ?? "Yükleme başarısız."}${requestId}`);
       }
-    } catch {
+    } catch (error) {
       setState("error");
-      setMessage("Bağlantı sorunu.");
+      setMessage(error instanceof Error ? error.message : "Bağlantı sorunu.");
     }
   }
 
   return (
     <span style={{ display: "inline-flex", flexDirection: "column", gap: 6 }}>
+      {preview && (
+        // eslint-disable-next-line @next/next/no-img-element
+        <img
+          src={preview}
+          alt="Yeni profil fotoğrafı ön izlemesi"
+          width={56}
+          height={56}
+          style={{ width: 56, height: 56, borderRadius: "50%", objectFit: "cover", border: "1px solid var(--color-border-soft)" }}
+        />
+      )}
       <input
         ref={inputRef}
         type="file"
@@ -153,10 +179,13 @@ export function AvatarUploader({ demoMode }: { demoMode: boolean }) {
         onClick={() => inputRef.current?.click()}
         title={demoMode ? "Demo modunda kapalı" : undefined}
       >
-        📷 Profil fotoğrafı yükle
+        {currentAvatar ? "Profil fotoğrafını değiştir" : "Profil fotoğrafı yükle"}
       </Button>
       {message && (
-        <span role="alert" style={{ fontSize: "var(--font-xs)", color: "var(--color-danger)", maxWidth: 320 }}>
+        <span
+          role={state === "error" ? "alert" : "status"}
+          style={{ fontSize: "var(--font-xs)", color: state === "error" ? "var(--color-danger)" : "var(--color-success)", maxWidth: 320 }}
+        >
           {message}
         </span>
       )}

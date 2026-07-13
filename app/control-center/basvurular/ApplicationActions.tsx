@@ -20,7 +20,10 @@ export function ApplicationActions({ applicationId }: { applicationId: string })
       const res = await fetch(`/api/admin/artist-applications/${applicationId}/approve`, { method: "POST" });
       const json = await res.json();
       if (json.success) router.refresh();
-      else setError(json.error?.message ?? "Onay başarısız.");
+      else {
+        const requestId = json.request_id ? ` İstek kodu: ${json.request_id}` : "";
+        setError(`${json.error?.message ?? "Onay başarısız."}${requestId}`);
+      }
     } catch {
       setError("Bağlantı sorunu.");
     } finally {

@@ -1,5 +1,7 @@
 import { defineConfig, devices } from "@playwright/test";
 
+const executablePath = process.env.PLAYWRIGHT_EXECUTABLE_PATH;
+
 /**
  * E2E testler — Şartname 29.4
  * Görsel test boyutları (29.5) projeler olarak tanımlanmıştır.
@@ -10,16 +12,18 @@ export default defineConfig({
   retries: process.env.CI ? 2 : 0,
   reporter: process.env.CI ? "github" : "list",
   use: {
-    baseURL: process.env.PLAYWRIGHT_BASE_URL ?? "http://localhost:3000",
+    baseURL: process.env.PLAYWRIGHT_BASE_URL ?? "http://localhost:3100",
     trace: "on-first-retry",
     locale: "tr-TR",
     timezoneId: "Europe/Istanbul",
+    ...(executablePath ? { launchOptions: { executablePath } } : {}),
   },
   webServer: {
-    command: "npm run dev",
-    url: "http://localhost:3000",
-    reuseExistingServer: !process.env.CI,
+    command: "npm run dev -- -p 3100",
+    url: "http://localhost:3100",
+    reuseExistingServer: false,
     timeout: 120_000,
+    env: { ...process.env, RAPLAB_FORCE_DEMO: "true" },
   },
   projects: [
     { name: "masaustu-1440", use: { ...devices["Desktop Chrome"], viewport: { width: 1440, height: 900 } } },
