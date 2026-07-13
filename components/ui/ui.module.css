@@ -1,0 +1,190 @@
+/* Ortak UI bileşen stilleri — Şartname 19.4 (buton hareketleri), 17.6 (köşeler) */
+
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  font-family: var(--font-family-interface);
+  font-weight: 600;
+  font-size: var(--font-sm);
+  border-radius: var(--radius-pill);
+  padding: 10px 22px;
+  min-height: 44px;
+  border: 1px solid transparent;
+  transition:
+    background-color var(--duration-fast) var(--ease-standard),
+    border-color var(--duration-fast) var(--ease-standard),
+    color var(--duration-fast) var(--ease-standard),
+    transform var(--duration-instant) var(--ease-standard);
+  white-space: nowrap;
+}
+
+.button:active {
+  transform: scale(0.98); /* 19.4 Press */
+}
+
+.button:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.buttonPrimary {
+  background: var(--artist-accent);
+  color: #0a0a0c;
+}
+
+.buttonPrimary:hover {
+  filter: brightness(1.08);
+}
+
+.buttonSecondary {
+  background: var(--color-surface-soft);
+  border-color: var(--color-border-soft);
+  color: var(--color-text-primary);
+}
+
+.buttonSecondary:hover {
+  border-color: var(--color-border-strong);
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.buttonGhost {
+  background: transparent;
+  color: var(--color-text-secondary);
+}
+
+.buttonGhost:hover {
+  color: var(--color-text-primary);
+  background: var(--color-surface-soft);
+}
+
+.buttonDanger {
+  background: transparent;
+  border-color: var(--color-danger);
+  color: var(--color-danger);
+}
+
+.buttonDanger:hover {
+  background: rgba(255, 95, 104, 0.12);
+}
+
+/* Sabit genişlikte spinner — 19.4 Loading */
+.spinner {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  border: 2px solid rgba(255, 255, 255, 0.25);
+  border-top-color: currentColor;
+  animation: spin 0.7s linear infinite;
+  flex-shrink: 0;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* Doğrulama rozeti */
+.verifiedBadge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: var(--color-info);
+  color: #08090b;
+  flex-shrink: 0;
+}
+
+/* Avatar */
+.avatar {
+  border-radius: 50%;
+  object-fit: cover;
+  background: var(--color-bg-elevated);
+  border: 1px solid var(--color-border-soft);
+  flex-shrink: 0;
+}
+
+/* Kart */
+.card {
+  background: var(--color-bg-secondary);
+  border: 1px solid var(--color-border-soft);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-soft);
+  transition:
+    transform var(--duration-fast) var(--ease-standard),
+    border-color var(--duration-fast) var(--ease-standard);
+}
+
+@media (hover: hover) {
+  .cardHover:hover {
+    transform: translateY(-3px); /* 19.3: 2–4 piksel yükselir */
+    border-color: var(--color-border-strong);
+  }
+}
+
+/* Boş durum */
+.emptyState {
+  text-align: center;
+  padding: var(--space-16) var(--space-6);
+  color: var(--color-text-muted);
+  border: 1px dashed var(--color-border-soft);
+  border-radius: var(--radius-lg);
+}
+
+.emptyState h3 {
+  color: var(--color-text-secondary);
+  margin-bottom: var(--space-2);
+  font-size: var(--font-lg);
+}
+
+/* Demo bandı */
+.demoBanner {
+  position: relative;
+  z-index: 20;
+  background: linear-gradient(90deg, rgba(157, 107, 255, 0.16), rgba(255, 77, 90, 0.16));
+  border-bottom: 1px solid var(--color-border-soft);
+  color: var(--color-text-secondary);
+  font-size: var(--font-xs);
+  text-align: center;
+  padding: 6px var(--space-4);
+}
+
+.demoBanner strong {
+  color: var(--color-text-primary);
+}
+
+/* Bölüm başlığı */
+.sectionTitle {
+  font-family: var(--font-family-display);
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  font-size: var(--font-2xl);
+  margin-bottom: var(--space-6);
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-3);
+}
+
+.sectionTitle span {
+  font-family: var(--font-family-interface);
+  font-size: var(--font-sm);
+  color: var(--color-text-muted);
+  text-transform: none;
+  letter-spacing: 0;
+}
+
+/* Durum etiketi */
+.statusChip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 3px 10px;
+  border-radius: var(--radius-pill);
+  font-size: var(--font-xs);
+  font-weight: 600;
+  background: var(--color-surface-soft);
+  border: 1px solid var(--color-border-soft);
+  color: var(--color-text-secondary);
+}

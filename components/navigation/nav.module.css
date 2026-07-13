@@ -1,0 +1,195 @@
+/* Navigasyon — Şartname 6.1: sabit üst menü, kaydırınca küçülür ve bulanıklaşır;
+   18.2: cam efekti yalnızca sabit navigasyon gibi katmanlarda */
+
+.topNav {
+  position: sticky;
+  top: 0;
+  z-index: 40;
+  height: var(--nav-height);
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid transparent;
+  transition:
+    height var(--duration-normal) var(--ease-standard),
+    background-color var(--duration-normal) var(--ease-standard),
+    border-color var(--duration-normal) var(--ease-standard),
+    backdrop-filter var(--duration-normal) var(--ease-standard);
+}
+
+.topNavCompact {
+  height: var(--nav-height-compact);
+  background: rgba(8, 9, 11, 0.72);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border-bottom-color: var(--color-border-soft);
+}
+
+.navInner {
+  width: 100%;
+  max-width: var(--content-max-width);
+  margin-inline: auto;
+  padding-inline: var(--space-6);
+  display: flex;
+  align-items: center;
+  gap: var(--space-6);
+}
+
+.logo {
+  font-family: var(--font-family-display);
+  font-size: var(--font-xl);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  transition: font-size var(--duration-normal) var(--ease-standard);
+  color: var(--color-text-primary);
+}
+
+.logoCompact {
+  font-size: var(--font-lg);
+}
+
+.logo em {
+  font-style: normal;
+  color: var(--artist-accent);
+}
+
+.links {
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+  flex: 1;
+}
+
+.link {
+  padding: 8px 14px;
+  border-radius: var(--radius-pill);
+  font-size: var(--font-sm);
+  color: var(--color-text-secondary);
+  transition:
+    color var(--duration-fast) var(--ease-standard),
+    background-color var(--duration-fast) var(--ease-standard);
+}
+
+.link:hover {
+  color: var(--color-text-primary);
+  background: var(--color-surface-soft);
+}
+
+.linkActive {
+  color: var(--color-text-primary);
+  background: var(--color-surface-soft);
+  position: relative;
+}
+
+.linkActive::after {
+  content: "";
+  position: absolute;
+  left: 14px;
+  right: 14px;
+  bottom: 2px;
+  height: 2px;
+  border-radius: 2px;
+  background: var(--artist-accent);
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin-left: auto;
+}
+
+.iconButton {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  color: var(--color-text-secondary);
+  transition:
+    color var(--duration-fast) var(--ease-standard),
+    background-color var(--duration-fast) var(--ease-standard);
+}
+
+.iconButton:hover {
+  color: var(--color-text-primary);
+  background: var(--color-surface-soft);
+}
+
+.badge {
+  position: absolute;
+  top: 2px;
+  right: 2px;
+  min-width: 16px;
+  height: 16px;
+  padding: 0 4px;
+  border-radius: var(--radius-pill);
+  background: var(--color-danger);
+  color: #fff;
+  font-size: 10px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@media (max-width: 1023px) {
+  .links {
+    display: none;
+  }
+}
+
+/* ---------- Mobil alt navigasyon (6.1) ---------- */
+
+.mobileNav {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 40;
+  height: var(--mobile-nav-height);
+  display: none;
+  background: rgba(8, 9, 11, 0.85);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border-top: 1px solid var(--color-border-soft);
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+@media (max-width: 1023px) {
+  .mobileNav {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+  }
+}
+
+.mobileLink {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  font-size: 10px;
+  color: var(--color-text-muted);
+  min-height: 44px; /* 31: dokunma alanı */
+}
+
+.mobileLinkActive {
+  color: var(--artist-accent);
+}
+
+.skipLink {
+  position: absolute;
+  left: -9999px;
+  z-index: 100;
+  background: var(--color-bg-elevated);
+  color: var(--color-text-primary);
+  padding: var(--space-3) var(--space-5);
+  border-radius: var(--radius-sm);
+}
+
+.skipLink:focus {
+  left: var(--space-4);
+  top: var(--space-4);
+}

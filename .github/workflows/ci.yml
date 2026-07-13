@@ -1,0 +1,47 @@
+# CI — Şartname 33/36: production build hatasız tamamlanmalı;
+# typecheck + lint + unit/integration testleri her push'ta koşar.
+
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  kalite:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Bağımlılıkları kur
+        run: npm ci
+
+      - name: TypeScript kontrolü
+        run: npm run typecheck
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Unit ve integration testleri
+        run: npm test
+
+      - name: Production build
+        run: npm run build
+
+  rls-testleri:
+    # RLS testleri Supabase CLI + pgTAP gerektirir (tests/rls/)
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: supabase/setup-cli@v1
+      - name: Supabase local başlat ve RLS testlerini koş
+        run: |
+          supabase db start
+          supabase test db

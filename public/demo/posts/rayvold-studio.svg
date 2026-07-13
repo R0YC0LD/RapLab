@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="1000" viewBox="0 0 1600 1000">
+<defs><radialGradient id="r" cx="35%" cy="35%" r="95%"><stop offset="0%" stop-color="#1a1010"/><stop offset="100%" stop-color="#060708"/></radialGradient></defs>
+<rect width="1600" height="1000" fill="url(#r)"/>
+<line x1="0" y1="0" x2="1600" y2="0" stroke="#ff4d5a" stroke-opacity="0.07"/><line x1="0" y1="83.33333333333333" x2="1600" y2="83.33333333333333" stroke="#ff4d5a" stroke-opacity="0.07"/><line x1="0" y1="166.66666666666666" x2="1600" y2="166.66666666666666" stroke="#ff4d5a" stroke-opacity="0.07"/><line x1="0" y1="250" x2="1600" y2="250" stroke="#ff4d5a" stroke-opacity="0.07"/><line x1="0" y1="333.3333333333333" x2="1600" y2="333.3333333333333" stroke="#ff4d5a" stroke-opacity="0.07"/><line x1="0" y1="416.6666666666667" x2="1600" y2="416.6666666666667" stroke="#ff4d5a" stroke-opacity="0.07"/><line x1="0" y1="500" x2="1600" y2="500" stroke="#ff4d5a" stroke-opacity="0.07"/><line x1="0" y1="583.3333333333334" x2="1600" y2="583.3333333333334" stroke="#ff4d5a" stroke-opacity="0.07"/><line x1="0" y1="666.6666666666666" x2="1600" y2="666.6666666666666" stroke="#ff4d5a" stroke-opacity="0.07"/><line x1="0" y1="750" x2="1600" y2="750" stroke="#ff4d5a" stroke-opacity="0.07"/><line x1="0" y1="833.3333333333334" x2="1600" y2="833.3333333333334" stroke="#ff4d5a" stroke-opacity="0.07"/><line x1="0" y1="916.6666666666666" x2="1600" y2="916.6666666666666" stroke="#ff4d5a" stroke-opacity="0.07"/>
+<circle cx="1120" cy="400" r="250" fill="#ff4d5a" opacity="0.14"/>
+<circle cx="1120" cy="400" r="140" fill="none" stroke="#ff4d5a" stroke-opacity="0.5" stroke-width="3"/>
+<text x="96" y="900" font-family="Arial Black, Arial" font-weight="900" font-size="70" fill="#ff4d5a" opacity="0.85" letter-spacing="6">MIX ROOM</text>
+
+</svg>

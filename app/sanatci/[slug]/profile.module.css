@@ -1,0 +1,284 @@
+/* Sanatçı profili — Şartname 7 */
+
+/* 7.1 Profil açılışı: tema rengi kenarlarda belirir, kapak bulanıktan netleşir,
+   ad tek parça fade+displacement ile görünür, bilgiler 12–20px hareketle yerleşir.
+   Toplam süre 500–800 ms aralığında. */
+
+.profile {
+  animation: theme-edges 700ms var(--ease-enter) both;
+}
+
+@keyframes theme-edges {
+  0% { box-shadow: inset 0 0 0 0 rgba(var(--artist-accent-rgb), 0); }
+  30% { box-shadow: inset 0 0 120px 0 rgba(var(--artist-accent-rgb), 0.28); }
+  100% { box-shadow: inset 0 0 0 0 rgba(var(--artist-accent-rgb), 0); }
+}
+
+.cover {
+  position: relative;
+  height: min(56vh, 560px);
+  overflow: hidden;
+}
+
+.coverImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  animation: cover-focus 640ms var(--ease-enter) both;
+}
+
+@keyframes cover-focus {
+  from { filter: blur(18px); transform: scale(1.04); opacity: 0.6; }
+  to { filter: blur(0); transform: scale(1); opacity: 1; }
+}
+
+.coverOverlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    rgba(8, 9, 11, calc(var(--overlay-strength, 0.55) * 0.4)) 0%,
+    rgba(8, 9, 11, var(--overlay-strength, 0.55)) 70%,
+    var(--color-bg-primary) 100%
+  );
+}
+
+.mobileCover {
+  display: none;
+}
+
+@media (max-width: 767px) {
+  .desktopCover { display: none; }
+  .mobileCover { display: block; }
+}
+
+.header {
+  position: relative;
+  margin-top: -120px;
+  z-index: 2;
+  display: flex;
+  gap: var(--space-6);
+  align-items: flex-end;
+  flex-wrap: wrap;
+  animation: info-rise 560ms var(--ease-enter) 120ms both;
+}
+
+@keyframes info-rise {
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.artistName {
+  font-family: var(--font-family-display);
+  font-size: var(--font-display-sm);
+  text-transform: uppercase;
+  line-height: 0.95;
+  animation: name-appear 640ms var(--ease-enter) 80ms both;
+}
+
+@keyframes name-appear {
+  from { opacity: 0; transform: translateY(10px) skewY(0.6deg); letter-spacing: 0.06em; }
+  to { opacity: 1; transform: translateY(0) skewY(0); letter-spacing: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .profile, .coverImage, .header, .artistName {
+    animation: none;
+  }
+}
+
+.avatarFrame {
+  width: 132px;
+  height: 132px;
+  border-radius: 50%;
+  border: 4px solid var(--color-bg-primary);
+  overflow: hidden;
+  box-shadow: 0 0 0 2px rgba(var(--artist-accent-rgb), 0.6), var(--shadow-soft);
+  flex-shrink: 0;
+  background: var(--color-bg-elevated);
+}
+
+.avatarFrame img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.headerInfo {
+  flex: 1;
+  min-width: 260px;
+  display: grid;
+  gap: var(--space-2);
+  padding-bottom: var(--space-2);
+}
+
+.bioLine {
+  font-family: var(--font-family-reading);
+  color: var(--color-text-secondary);
+  max-width: 60ch;
+}
+
+.metaRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+  color: var(--color-text-muted);
+  font-size: var(--font-sm);
+  align-items: center;
+}
+
+.genreTag {
+  padding: 3px 12px;
+  border-radius: var(--radius-pill);
+  border: 1px solid rgba(var(--artist-accent-rgb), 0.4);
+  color: var(--artist-accent);
+  font-size: var(--font-xs);
+}
+
+.headerActions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  padding-bottom: var(--space-3);
+}
+
+.followerCount {
+  text-align: center;
+}
+
+.followerCount strong {
+  display: block;
+  font-size: var(--font-xl);
+  font-variant-numeric: tabular-nums;
+}
+
+.followerCount span {
+  font-size: var(--font-xs);
+  color: var(--color-text-muted);
+}
+
+/* 7.3 Sekmeler */
+.tabs {
+  display: flex;
+  gap: var(--space-1);
+  margin-top: var(--space-10);
+  border-bottom: 1px solid var(--color-border-soft);
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.tabs::-webkit-scrollbar { display: none; }
+
+.tab {
+  padding: var(--space-3) var(--space-5);
+  color: var(--color-text-secondary);
+  font-weight: 600;
+  font-size: var(--font-sm);
+  border-bottom: 2px solid transparent;
+  white-space: nowrap;
+  transition: color var(--duration-fast) var(--ease-standard);
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+}
+
+.tab:hover { color: var(--color-text-primary); }
+
+.tabActive {
+  color: var(--artist-accent);
+  border-bottom-color: var(--artist-accent);
+}
+
+.content {
+  padding: var(--space-10) 0 var(--space-16);
+  display: grid;
+  gap: var(--space-6);
+  max-width: 760px;
+}
+
+.aboutGrid {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: var(--space-10);
+  max-width: 1100px;
+}
+
+@media (max-width: 767px) {
+  .aboutGrid { grid-template-columns: 1fr; }
+  .header { margin-top: -80px; }
+  .avatarFrame { width: 96px; height: 96px; }
+}
+
+.aboutBlock h3 {
+  font-size: var(--font-xs);
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: var(--color-text-muted);
+  margin-bottom: var(--space-3);
+}
+
+.aboutBlock {
+  margin-bottom: var(--space-8);
+}
+
+.longBio {
+  font-family: var(--font-family-reading);
+  line-height: 1.8;
+  color: var(--color-text-secondary);
+}
+
+.timeline {
+  display: grid;
+  gap: 0;
+  position: relative;
+  padding-left: var(--space-6);
+  max-width: 640px;
+}
+
+.timeline::before {
+  content: "";
+  position: absolute;
+  left: 7px;
+  top: 8px;
+  bottom: 8px;
+  width: 2px;
+  background: linear-gradient(180deg, var(--artist-accent), transparent);
+}
+
+.timelineItem {
+  position: relative;
+  padding: 0 0 var(--space-8);
+}
+
+.timelineItem::before {
+  content: "";
+  position: absolute;
+  left: calc(-1 * var(--space-6) + 2px);
+  top: 6px;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--color-bg-primary);
+  border: 3px solid var(--artist-accent);
+}
+
+.timelineDate {
+  font-size: var(--font-xs);
+  color: var(--artist-accent);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.mediaGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: var(--space-3);
+  max-width: 1100px;
+}
+
+.mediaGrid img {
+  width: 100%;
+  aspect-ratio: 1;
+  object-fit: cover;
+  border-radius: var(--radius-md);
+}

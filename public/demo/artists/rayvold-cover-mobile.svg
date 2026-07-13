@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="1000" viewBox="0 0 800 1000">
+<defs>
+<radialGradient id="r" cx="22%" cy="30%" r="90%"><stop offset="0%" stop-color="#2b3a67"/><stop offset="60%" stop-color="#12141c"/><stop offset="100%" stop-color="#07080a"/></radialGradient>
+<linearGradient id="l" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#ff4d5a" stop-opacity="0.5"/><stop offset="55%" stop-color="#ff4d5a" stop-opacity="0"/></linearGradient>
+
+</defs>
+<rect width="800" height="1000" fill="url(#r)"/>
+<circle cx="624" cy="300" r="420" fill="#ff4d5a" opacity="0.13"/>
+<circle cx="624" cy="300" r="280" fill="none" stroke="#ff4d5a" stroke-opacity="0.35" stroke-width="2"/>
+<circle cx="624" cy="300" r="160" fill="none" stroke="#ff4d5a" stroke-opacity="0.5" stroke-width="1.5"/>
+<circle cx="624" cy="300" r="20" fill="#ff4d5a"/>
+<rect x="0" y="690" width="19" height="310" fill="#ff4d5a" opacity="0.16"/><rect x="29" y="688" width="19" height="312" fill="#ff4d5a" opacity="0.16"/><rect x="57" y="630" width="19" height="370" fill="#ff4d5a" opacity="0.16"/><rect x="86" y="763" width="19" height="237" fill="#ff4d5a" opacity="0.16"/><rect x="114" y="590" width="19" height="410" fill="#ff4d5a" opacity="0.16"/><rect x="143" y="848" width="19" height="152" fill="#ff4d5a" opacity="0.16"/><rect x="171" y="571" width="19" height="429" fill="#ff4d5a" opacity="0.16"/><rect x="200" y="902" width="19" height="98" fill="#ff4d5a" opacity="0.16"/><rect x="229" y="576" width="19" height="424" fill="#ff4d5a" opacity="0.16"/><rect x="257" y="814" width="19" height="186" fill="#ff4d5a" opacity="0.16"/><rect x="286" y="603" width="19" height="397" fill="#ff4d5a" opacity="0.16"/><rect x="314" y="732" width="19" height="268" fill="#ff4d5a" opacity="0.16"/><rect x="343" y="652" width="19" height="348" fill="#ff4d5a" opacity="0.16"/><rect x="371" y="663" width="19" height="337" fill="#ff4d5a" opacity="0.16"/><rect x="400" y="718" width="19" height="282" fill="#ff4d5a" opacity="0.16"/><rect x="429" y="611" width="19" height="389" fill="#ff4d5a" opacity="0.16"/><rect x="457" y="798" width="19" height="202" fill="#ff4d5a" opacity="0.16"/><rect x="486" y="579" width="19" height="421" fill="#ff4d5a" opacity="0.16"/><rect x="514" y="885" width="19" height="115" fill="#ff4d5a" opacity="0.16"/><rect x="543" y="570" width="19" height="430" fill="#ff4d5a" opacity="0.16"/><rect x="571" y="864" width="19" height="136" fill="#ff4d5a" opacity="0.16"/><rect x="600" y="584" width="19" height="416" fill="#ff4d5a" opacity="0.16"/><rect x="629" y="778" width="19" height="222" fill="#ff4d5a" opacity="0.16"/><rect x="657" y="621" width="19" height="379" fill="#ff4d5a" opacity="0.16"/><rect x="686" y="701" width="19" height="299" fill="#ff4d5a" opacity="0.16"/><rect x="714" y="677" width="19" height="323" fill="#ff4d5a" opacity="0.16"/><rect x="743" y="638" width="19" height="362" fill="#ff4d5a" opacity="0.16"/><rect x="771" y="750" width="19" height="250" fill="#ff4d5a" opacity="0.16"/>
+<rect width="800" height="1000" fill="url(#l)"/>
+<text x="40" y="880" font-family="Arial Black, Arial" font-weight="900" font-size="110" fill="#f5f5f3" opacity="0.92" letter-spacing="4">RAY VOLD</text>
+
+</svg>

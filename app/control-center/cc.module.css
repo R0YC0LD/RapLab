@@ -1,0 +1,176 @@
+/* Control Center — Şartname 14: hazır admin template görünümü YOK.
+   Operasyon merkezi / yayın kontrol odası hissi: monitör panelleri,
+   durum ışıkları, telemetri çizgileri. */
+
+.shell {
+  display: grid;
+  grid-template-columns: 250px 1fr;
+  min-height: 100dvh;
+  background:
+    radial-gradient(1200px 400px at 80% -10%, rgba(101, 167, 255, 0.07), transparent),
+    var(--color-bg-primary);
+}
+
+.sidebar {
+  border-right: 1px solid var(--color-border-soft);
+  padding: var(--space-6) var(--space-3);
+  position: sticky;
+  top: 0;
+  height: 100dvh;
+  overflow-y: auto;
+  background: rgba(6, 7, 9, 0.75);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+}
+
+.brand {
+  font-family: var(--font-family-display);
+  font-size: var(--font-md);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  padding-inline: var(--space-3);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.statusDot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--color-success);
+  box-shadow: 0 0 8px var(--color-success);
+  animation: pulse 2.4s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  50% { opacity: 0.4; }
+}
+
+.navGroupLabel {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  color: var(--color-text-muted);
+  padding: var(--space-2) var(--space-3) 4px;
+}
+
+.navLink {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px var(--space-3);
+  border-radius: var(--radius-sm);
+  color: var(--color-text-secondary);
+  font-size: var(--font-sm);
+  min-height: 38px;
+}
+
+.navLink:hover {
+  color: var(--color-text-primary);
+  background: var(--color-surface-soft);
+}
+
+.navLinkActive {
+  color: var(--color-info);
+  background: rgba(101, 167, 255, 0.1);
+  font-weight: 600;
+}
+
+.main {
+  padding: var(--space-10) var(--space-10) var(--space-24);
+  min-width: 0;
+}
+
+.pageTitle {
+  font-family: var(--font-family-display);
+  text-transform: uppercase;
+  font-size: var(--font-2xl);
+  margin-bottom: var(--space-2);
+}
+
+.pageSubtitle {
+  color: var(--color-text-muted);
+  font-size: var(--font-sm);
+  margin-bottom: var(--space-8);
+}
+
+.metricGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: var(--space-4);
+}
+
+.metric {
+  padding: var(--space-5);
+  border: 1px solid var(--color-border-soft);
+  border-radius: var(--radius-md);
+  background: var(--color-bg-secondary);
+  border-left: 3px solid var(--color-info);
+}
+
+.metricValue {
+  font-family: var(--font-family-display);
+  font-size: var(--font-2xl);
+  font-variant-numeric: tabular-nums;
+}
+
+.metricLabel {
+  color: var(--color-text-muted);
+  font-size: var(--font-xs);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.panel {
+  padding: var(--space-6);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--color-border-soft);
+  background: var(--color-bg-secondary);
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--font-sm);
+}
+
+.table th {
+  text-align: left;
+  padding: var(--space-3);
+  color: var(--color-text-muted);
+  font-size: var(--font-xs);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  border-bottom: 1px solid var(--color-border-strong);
+}
+
+.table td {
+  padding: var(--space-3);
+  border-bottom: 1px solid var(--color-border-soft);
+  vertical-align: middle;
+}
+
+.tableWrap {
+  overflow-x: auto;
+  border: 1px solid var(--color-border-soft);
+  border-radius: var(--radius-md);
+  background: var(--color-bg-secondary);
+  padding: var(--space-2) var(--space-4);
+}
+
+@media (max-width: 1023px) {
+  .shell {
+    grid-template-columns: 1fr;
+  }
+  .sidebar {
+    position: static;
+    height: auto;
+    border-right: none;
+    border-bottom: 1px solid var(--color-border-soft);
+  }
+  .main {
+    padding: var(--space-6) var(--space-4) var(--space-24);
+  }
+}

@@ -1,0 +1,295 @@
+/* Artist Studio — Şartname 13. Hazır admin şablonu görünümü YOK (Kural 19);
+   kayıt stüdyosu / miks masası hissi: koyu paneller, ince çizgiler, vurgu ışıkları. */
+
+.shell {
+  display: grid;
+  grid-template-columns: 260px 1fr;
+  min-height: 100dvh;
+  background:
+    linear-gradient(180deg, rgba(var(--artist-accent-rgb), 0.05), transparent 320px),
+    var(--color-bg-primary);
+}
+
+.sidebar {
+  border-right: 1px solid var(--color-border-soft);
+  padding: var(--space-6) var(--space-4);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+  position: sticky;
+  top: 0;
+  height: 100dvh;
+  overflow-y: auto;
+  background: rgba(8, 9, 11, 0.6);
+}
+
+.brand {
+  font-family: var(--font-family-display);
+  font-size: var(--font-lg);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  padding-inline: var(--space-3);
+}
+
+.brand em {
+  font-style: normal;
+  color: var(--artist-accent);
+}
+
+.artistPicker {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-3);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--color-border-soft);
+  background: var(--color-bg-secondary);
+}
+
+.nav {
+  display: grid;
+  gap: 2px;
+}
+
+.navLink {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: 10px var(--space-3);
+  border-radius: var(--radius-sm);
+  color: var(--color-text-secondary);
+  font-size: var(--font-sm);
+  transition:
+    color var(--duration-fast) var(--ease-standard),
+    background-color var(--duration-fast) var(--ease-standard);
+  min-height: 40px;
+}
+
+.navLink:hover {
+  color: var(--color-text-primary);
+  background: var(--color-surface-soft);
+}
+
+.navLinkActive {
+  color: var(--artist-accent);
+  background: rgba(var(--artist-accent-rgb), 0.1);
+  font-weight: 600;
+}
+
+.main {
+  padding: var(--space-10) var(--space-10) var(--space-24);
+  min-width: 0;
+}
+
+.pageTitle {
+  font-family: var(--font-family-display);
+  text-transform: uppercase;
+  font-size: var(--font-2xl);
+  margin-bottom: var(--space-2);
+}
+
+.pageSubtitle {
+  color: var(--color-text-muted);
+  font-size: var(--font-sm);
+  margin-bottom: var(--space-10);
+}
+
+/* Genel bakış kartları — VU-metre esintili */
+.statGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: var(--space-4);
+}
+
+.statCard {
+  padding: var(--space-5);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--color-border-soft);
+  background: linear-gradient(160deg, var(--color-bg-elevated), var(--color-bg-secondary));
+  position: relative;
+  overflow: hidden;
+}
+
+.statCard::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: var(--space-5);
+  width: 32px;
+  height: 3px;
+  border-radius: 0 0 3px 3px;
+  background: var(--artist-accent);
+}
+
+.statValue {
+  font-family: var(--font-family-display);
+  font-size: var(--font-3xl);
+  font-variant-numeric: tabular-nums;
+  line-height: 1.1;
+}
+
+.statLabel {
+  color: var(--color-text-muted);
+  font-size: var(--font-xs);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-top: var(--space-1);
+}
+
+/* Tablo */
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--font-sm);
+}
+
+.table th {
+  text-align: left;
+  padding: var(--space-3);
+  color: var(--color-text-muted);
+  font-size: var(--font-xs);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  border-bottom: 1px solid var(--color-border-strong);
+}
+
+.table td {
+  padding: var(--space-3);
+  border-bottom: 1px solid var(--color-border-soft);
+  vertical-align: middle;
+}
+
+.tableWrap {
+  overflow-x: auto;
+  border: 1px solid var(--color-border-soft);
+  border-radius: var(--radius-md);
+  background: var(--color-bg-secondary);
+  padding: var(--space-2) var(--space-4);
+}
+
+/* Basit çubuk grafik (13.7) */
+.chart {
+  display: flex;
+  align-items: flex-end;
+  gap: var(--space-2);
+  height: 160px;
+  padding: var(--space-4) 0;
+}
+
+.chartBar {
+  flex: 1;
+  background: linear-gradient(180deg, var(--artist-accent), rgba(var(--artist-accent-rgb), 0.25));
+  border-radius: 4px 4px 0 0;
+  min-height: 4px;
+  position: relative;
+}
+
+.chartBar span {
+  position: absolute;
+  bottom: -22px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 10px;
+  color: var(--color-text-muted);
+  white-space: nowrap;
+}
+
+.chartCard {
+  padding: var(--space-6) var(--space-6) var(--space-10);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--color-border-soft);
+  background: var(--color-bg-secondary);
+}
+
+.chartCard h3 {
+  font-size: var(--font-sm);
+  color: var(--color-text-secondary);
+  margin-bottom: var(--space-2);
+}
+
+/* Gönderi oluşturucu 3 sütun (13.3) */
+.composer {
+  display: grid;
+  grid-template-columns: 200px minmax(0, 1fr) 320px;
+  gap: var(--space-6);
+  align-items: start;
+}
+
+@media (max-width: 1279px) {
+  .composer {
+    grid-template-columns: 1fr;
+  }
+}
+
+.typeList {
+  display: grid;
+  gap: var(--space-2);
+}
+
+.typeButton {
+  padding: var(--space-3) var(--space-4);
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--color-border-soft);
+  text-align: left;
+  color: var(--color-text-secondary);
+  font-size: var(--font-sm);
+  transition: border-color var(--duration-fast) var(--ease-standard);
+}
+
+.typeButton:hover {
+  border-color: var(--color-border-strong);
+}
+
+.typeButtonActive {
+  border-color: var(--artist-accent);
+  color: var(--artist-accent);
+  background: rgba(var(--artist-accent-rgb), 0.08);
+}
+
+.panel {
+  padding: var(--space-6);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--color-border-soft);
+  background: var(--color-bg-secondary);
+}
+
+.field {
+  display: grid;
+  gap: 6px;
+  font-size: var(--font-sm);
+  margin-bottom: var(--space-4);
+}
+
+.input {
+  padding: 11px 14px;
+  background: var(--color-bg-elevated);
+  border: 1px solid var(--color-border-soft);
+  border-radius: var(--radius-sm);
+  color: var(--color-text-primary);
+  width: 100%;
+}
+
+@media (max-width: 1023px) {
+  .shell {
+    grid-template-columns: 1fr;
+  }
+  .sidebar {
+    position: static;
+    height: auto;
+    flex-direction: column;
+    border-right: none;
+    border-bottom: 1px solid var(--color-border-soft);
+  }
+  .nav {
+    display: flex;
+    overflow-x: auto;
+    gap: var(--space-1);
+    padding-bottom: var(--space-2);
+  }
+  .navLink {
+    white-space: nowrap;
+  }
+  .main {
+    padding: var(--space-6) var(--space-4) var(--space-24);
+  }
+}

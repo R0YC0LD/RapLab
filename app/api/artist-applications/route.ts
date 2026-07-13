@@ -1,0 +1,42 @@
+/** POST /api/artist-applications — sanatçı başvurusu oluşturma (Şartname 12, 23) */
+
+import { NextRequest, NextResponse } from "next/server";
+import { z } from "zod";
+import { createApplication } from "@/features/applications/service";
+import { requireUser } from "@/lib/auth/session";
+import { apiFailure, apiSuccess, ApiError, ErrorCodes } from "@/lib/errors";
+import { checkRateLimit } from "@/lib/rate-limit";
+
+const schema = z.object({
+  stage_name: z.string().min(2).max(80),
+  legal_name: z.string().min(2).max(160),
+  contact_email: z.string().email(),
+  phone_optional: z.string().max(40).optional(),
+  artist_description: z.string().min(20).max(4000),
+  official_social_links: z.array(z.string().url()).max(10).default([]),
+  distribution_links: z.array(z.string().url()).max(10).default([]),
+  label_name_optional: z.string().max(120).optional(),
+  applicant_relationship: z.enum(["artist", "manager", "label", "team_member"]),
+  rights_declaration: z.boolean(),
+  additional_notes: z.string().max(2000).optional(),
+});
+
+export async function POST(req: NextRequest) {
+  try {
+    const user = await requireUser();
+    if (!checkRateLimit("artist_application", user.id)) {
+      throw new ApiError(ErrorCodes.RATE_LIMITED);
+    }
+    const parsed = schema.safeParse(await req.json());
+    if (!parsed.success) {
+      const fieldErrors: Record<string, string> = {};
+      for (const issue of parsed.error.issues) fieldErrors[issue.path.join(".")] = issue.message;
+      throw new ApiError(ErrorCodes.VALIDATION_FAILED, fieldErrors);
+    }
+    const app = await createApplication(parsed.data, user);
+    return NextResponse.json(apiSuccess({ id: app.id, status: app.status }), { status: 201 });
+  } catch (error) {
+    const { body, status } = apiFailure(error);
+    return NextResponse.json(body, { status });
+  }
+}

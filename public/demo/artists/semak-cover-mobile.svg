@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="1000" viewBox="0 0 800 1000">
+<defs>
+<radialGradient id="r" cx="22%" cy="30%" r="90%"><stop offset="0%" stop-color="#3a2d1d"/><stop offset="60%" stop-color="#171208"/><stop offset="100%" stop-color="#07080a"/></radialGradient>
+<linearGradient id="l" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#e8b64c" stop-opacity="0.5"/><stop offset="55%" stop-color="#e8b64c" stop-opacity="0"/></linearGradient>
+
+</defs>
+<rect width="800" height="1000" fill="url(#r)"/>
+<circle cx="624" cy="300" r="420" fill="#e8b64c" opacity="0.13"/>
+<circle cx="624" cy="300" r="280" fill="none" stroke="#e8b64c" stroke-opacity="0.35" stroke-width="2"/>
+<circle cx="624" cy="300" r="160" fill="none" stroke="#e8b64c" stroke-opacity="0.5" stroke-width="1.5"/>
+<circle cx="624" cy="300" r="20" fill="#e8b64c"/>
+<rect x="0" y="584" width="19" height="416" fill="#e8b64c" opacity="0.16"/><rect x="29" y="778" width="19" height="222" fill="#e8b64c" opacity="0.16"/><rect x="57" y="621" width="19" height="379" fill="#e8b64c" opacity="0.16"/><rect x="86" y="701" width="19" height="299" fill="#e8b64c" opacity="0.16"/><rect x="114" y="677" width="19" height="323" fill="#e8b64c" opacity="0.16"/><rect x="143" y="639" width="19" height="361" fill="#e8b64c" opacity="0.16"/><rect x="171" y="750" width="19" height="250" fill="#e8b64c" opacity="0.16"/><rect x="200" y="595" width="19" height="405" fill="#e8b64c" opacity="0.16"/><rect x="229" y="834" width="19" height="166" fill="#e8b64c" opacity="0.16"/><rect x="257" y="573" width="19" height="427" fill="#e8b64c" opacity="0.16"/><rect x="286" y="917" width="19" height="83" fill="#e8b64c" opacity="0.16"/><rect x="314" y="573" width="19" height="427" fill="#e8b64c" opacity="0.16"/><rect x="343" y="828" width="19" height="172" fill="#e8b64c" opacity="0.16"/><rect x="371" y="597" width="19" height="403" fill="#e8b64c" opacity="0.16"/><rect x="400" y="744" width="19" height="256" fill="#e8b64c" opacity="0.16"/><rect x="429" y="642" width="19" height="358" fill="#e8b64c" opacity="0.16"/><rect x="457" y="673" width="19" height="327" fill="#e8b64c" opacity="0.16"/><rect x="486" y="706" width="19" height="294" fill="#e8b64c" opacity="0.16"/><rect x="514" y="618" width="19" height="382" fill="#e8b64c" opacity="0.16"/><rect x="543" y="784" width="19" height="216" fill="#e8b64c" opacity="0.16"/><rect x="571" y="583" width="19" height="417" fill="#e8b64c" opacity="0.16"/><rect x="600" y="871" width="19" height="129" fill="#e8b64c" opacity="0.16"/><rect x="629" y="570" width="19" height="430" fill="#e8b64c" opacity="0.16"/><rect x="657" y="879" width="19" height="121" fill="#e8b64c" opacity="0.16"/><rect x="686" y="581" width="19" height="419" fill="#e8b64c" opacity="0.16"/><rect x="714" y="791" width="19" height="209" fill="#e8b64c" opacity="0.16"/><rect x="743" y="614" width="19" height="386" fill="#e8b64c" opacity="0.16"/><rect x="771" y="713" width="19" height="287" fill="#e8b64c" opacity="0.16"/>
+<rect width="800" height="1000" fill="url(#l)"/>
+<text x="40" y="880" font-family="Arial Black, Arial" font-weight="900" font-size="110" fill="#f5f5f3" opacity="0.92" letter-spacing="4">SEMA K</text>
+
+</svg>

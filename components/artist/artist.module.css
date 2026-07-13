@@ -1,0 +1,250 @@
+/* Sanatçı bileşenleri — Şartname 6.2 (Hero), 6.3 (RapLine), 10.3 (Takip) */
+
+/* ---------- Hero ---------- */
+
+.hero {
+  position: relative;
+  min-height: min(78vh, 720px);
+  display: flex;
+  align-items: flex-end;
+  overflow: hidden;
+  border-bottom: 1px solid var(--color-border-soft);
+}
+
+.heroImage {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  /* 30: hero görseli öncelikli yüklenir */
+}
+
+.heroOverlay {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(180deg, rgba(8, 9, 11, 0.25) 0%, rgba(8, 9, 11, 0.86) 78%, var(--color-bg-primary) 100%),
+    radial-gradient(90% 70% at 20% 40%, rgba(var(--artist-accent-rgb), 0.22), transparent 70%);
+}
+
+.heroContent {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  max-width: var(--content-max-width);
+  margin-inline: auto;
+  padding: var(--space-24) var(--space-6) var(--space-16);
+}
+
+.heroKicker {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: var(--font-xs);
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--color-text-secondary);
+  margin-bottom: var(--space-4);
+}
+
+.heroKicker::before {
+  content: "";
+  width: 28px;
+  height: 1px;
+  background: var(--artist-accent);
+}
+
+.heroName {
+  font-family: var(--font-family-display);
+  font-size: var(--font-display-lg);
+  line-height: 0.92;
+  text-transform: uppercase;
+  letter-spacing: -0.01em;
+  margin-bottom: var(--space-4);
+  max-width: 14ch;
+}
+
+.heroTagline {
+  font-family: var(--font-family-reading);
+  font-size: var(--font-lg);
+  color: var(--color-text-secondary);
+  max-width: 52ch;
+  margin-bottom: var(--space-6);
+}
+
+.heroMeta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-3);
+  margin-bottom: var(--space-8);
+  color: var(--color-text-muted);
+  font-size: var(--font-sm);
+}
+
+.heroActions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+}
+
+@media (max-width: 767px) {
+  .hero {
+    min-height: 66vh;
+  }
+  .heroContent {
+    padding-bottom: var(--space-10);
+  }
+}
+
+/* ---------- RapLine (6.3) ---------- */
+
+.rapline {
+  display: flex;
+  gap: var(--space-5);
+  overflow-x: auto;
+  padding: var(--space-4) var(--space-2) var(--space-5);
+  scrollbar-width: none;
+  scroll-snap-type: x proximity;
+}
+
+.rapline::-webkit-scrollbar {
+  display: none;
+}
+
+.raplineItem {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-2);
+  min-width: 96px;
+  scroll-snap-align: start;
+  text-align: center;
+}
+
+.raplineRing {
+  position: relative;
+  width: 84px;
+  height: 84px;
+  border-radius: 50%;
+  padding: 3px;
+  background: var(--ring-color, var(--accent-neutral));
+  transition: transform var(--duration-fast) var(--ease-standard);
+}
+
+@media (hover: hover) {
+  .raplineItem:hover .raplineRing {
+    transform: scale(1.05);
+  }
+}
+
+.raplineRing img,
+.raplineRing span {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  border: 3px solid var(--color-bg-primary);
+  object-fit: cover;
+}
+
+.raplineName {
+  font-size: var(--font-xs);
+  font-weight: 600;
+  color: var(--color-text-secondary);
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  max-width: 96px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.raplineStatus {
+  font-size: 10px;
+  color: var(--color-text-muted);
+}
+
+/* ---------- Takip butonu (10.3) ---------- */
+
+.followButton {
+  min-width: 148px; /* genişlik sabit — metin değişince layout kaymaz */
+  position: relative;
+}
+
+.followRing {
+  animation: follow-glow 350ms var(--ease-enter);
+}
+
+@keyframes follow-glow {
+  0% { box-shadow: 0 0 0 0 rgba(var(--artist-accent-rgb), 0.55); }
+  100% { box-shadow: 0 0 0 14px rgba(var(--artist-accent-rgb), 0); }
+}
+
+/* ---------- Sanatçı kartı ---------- */
+
+.artistCard {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border-radius: var(--radius-lg);
+  background: var(--color-bg-secondary);
+  border: 1px solid var(--color-border-soft);
+  transition:
+    transform var(--duration-fast) var(--ease-standard),
+    border-color var(--duration-fast) var(--ease-standard);
+}
+
+@media (hover: hover) {
+  .artistCard:hover {
+    transform: translateY(-3px);
+    border-color: rgba(var(--artist-accent-rgb), 0.4);
+  }
+  .artistCard:hover .artistCardCover img {
+    transform: scale(1.015); /* 19.3 */
+  }
+}
+
+.artistCardCover {
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  background: var(--color-bg-elevated);
+}
+
+.artistCardCover img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform var(--duration-normal) var(--ease-standard);
+}
+
+.artistCardBody {
+  padding: var(--space-5);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  flex: 1;
+}
+
+.artistCardName {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: var(--font-lg);
+  font-weight: 700;
+}
+
+.artistCardBio {
+  color: var(--color-text-secondary);
+  font-size: var(--font-sm);
+  flex: 1;
+}
+
+.artistCardMeta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  color: var(--color-text-muted);
+  font-size: var(--font-xs);
+}
