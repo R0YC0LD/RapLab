@@ -335,6 +335,11 @@ export interface ArtistApplication {
   applicant_relationship: "artist" | "manager" | "label" | "team_member";
   identity_document_path: string | null;
   authorization_document_path: string | null;
+  /** "Sitenize sanatçı üyeliği yapmak istiyorum" ses beyanı — özel bucket yolu */
+  voice_declaration_path: string | null;
+  /** Kimlik belgesi tek seferlik görüntüleme kilidi */
+  identity_viewed_at: string | null;
+  identity_viewed_by: string | null;
   rights_declaration: boolean;
   additional_notes: string | null;
   status: ApplicationStatus;

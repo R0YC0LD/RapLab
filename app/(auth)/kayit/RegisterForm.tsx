@@ -7,13 +7,15 @@
  * Form hata özeti erişilebilirlik gereği en üstte gösterilir (31).
  */
 
-import { useState, useTransition } from "react";
+import { useRef, useState, useTransition } from "react";
 import { registerWithEmail, type AuthActionResult } from "@/features/auth/actions";
-import { validateUsername } from "@/lib/validation";
+import { SEARCH_DEBOUNCE_MS, validateUsername } from "@/lib/validation";
 
 export function RegisterForm({ disabled }: { disabled: boolean }) {
   const [result, setResult] = useState<AuthActionResult | null>(null);
   const [usernameHint, setUsernameHint] = useState<string | null>(null);
+  const [usernameOk, setUsernameOk] = useState<boolean | null>(null);
+  const checkTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const [pending, startTransition] = useTransition();
 
   function onSubmit(formData: FormData) {
@@ -64,14 +66,41 @@ export function RegisterForm({ disabled }: { disabled: boolean }) {
           className="auth-input"
           aria-describedby="kullanici-adi-ipucu"
           onChange={(e) => {
-            const v = e.target.value;
+            const v = e.target.value.toLowerCase();
+            setUsernameOk(null);
+            if (checkTimer.current) clearTimeout(checkTimer.current);
             if (!v) return setUsernameHint(null);
             const check = validateUsername(v);
             setUsernameHint(check.valid ? null : (check.error ?? null));
+            if (!check.valid) return;
+            // Canlı müsaitlik kontrolü — aynı ad iki kullanıcıya verilmez (11.2)
+            checkTimer.current = setTimeout(async () => {
+              try {
+                const res = await fetch(`/api/auth/username-check?u=${encodeURIComponent(v)}`);
+                const json = await res.json();
+                if (json.success) {
+                  setUsernameOk(json.data.available);
+                  setUsernameHint(json.data.available ? null : (json.data.reason ?? "Bu ad alınmış."));
+                }
+              } catch {
+                /* sessiz — asıl güvence veritabanı unique constraint */
+              }
+            }, SEARCH_DEBOUNCE_MS);
           }}
         />
-        <span id="kullanici-adi-ipucu" style={{ fontSize: "var(--font-xs)", color: usernameHint ? "var(--color-danger)" : "var(--color-text-muted)" }}>
-          {usernameHint ?? "3–24 karakter; küçük harf, sayı, nokta ve alt çizgi."}
+        <span
+          id="kullanici-adi-ipucu"
+          aria-live="polite"
+          style={{
+            fontSize: "var(--font-xs)",
+            color: usernameHint
+              ? "var(--color-danger)"
+              : usernameOk
+                ? "var(--color-success)"
+                : "var(--color-text-muted)",
+          }}
+        >
+          {usernameHint ?? (usernameOk ? "✓ Bu kullanıcı adı müsait" : "3–24 karakter; küçük harf, sayı, nokta ve alt çizgi.")}
         </span>
       </label>
 

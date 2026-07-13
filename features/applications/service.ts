@@ -21,6 +21,9 @@ export interface ApplicationInput {
   applicant_relationship: "artist" | "manager" | "label" | "team_member";
   rights_declaration: boolean;
   additional_notes?: string;
+  /** /api/verification/upload ile yüklenen özel bucket yolları */
+  identity_document_path?: string;
+  voice_declaration_path?: string;
 }
 
 export async function getMyApplications(viewer: SessionUser): Promise<ArtistApplication[]> {
@@ -66,8 +69,11 @@ export async function createApplication(
       distribution_links: input.distribution_links,
       label_name_optional: input.label_name_optional ?? null,
       applicant_relationship: input.applicant_relationship,
-      identity_document_path: null,
+      identity_document_path: input.identity_document_path ?? null,
       authorization_document_path: null,
+      voice_declaration_path: input.voice_declaration_path ?? null,
+      identity_viewed_at: null,
+      identity_viewed_by: null,
       rights_declaration: input.rights_declaration,
       additional_notes: input.additional_notes ?? null,
       status: "submitted",

@@ -4,6 +4,7 @@ import type { Metadata } from "next";
 import { redirect } from "next/navigation";
 import { getSessionUser } from "@/lib/auth/session";
 import { getFeatureFlags } from "@/features/moderation/service";
+import { isDemoMode } from "@/lib/env";
 import ui from "@/components/ui/ui.module.css";
 import { ApplicationForm } from "./ApplicationForm";
 
@@ -32,7 +33,7 @@ export default async function ApplicationPage() {
             verilir. Kimlik ve yetki belgelerin <strong>hiçbir zaman herkese açık olmaz</strong>{" "}
             ve yalnızca süreli özel bağlantılarla incelenir.
           </p>
-          <ApplicationForm />
+          <ApplicationForm demoMode={isDemoMode()} />
         </>
       )}
     </div>

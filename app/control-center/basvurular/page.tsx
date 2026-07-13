@@ -8,6 +8,7 @@ import { EmptyState } from "@/components/ui/EmptyState";
 import { CCShell } from "@/components/admin/CCShell";
 import { requireCC } from "../helpers";
 import { ApplicationActions } from "./ApplicationActions";
+import { VerificationViewer } from "./VerificationViewer";
 import styles from "../cc.module.css";
 
 export const metadata: Metadata = { title: "Başvurular — Control Center", robots: { index: false } };
@@ -73,10 +74,31 @@ export default async function ApplicationsPage() {
                 <div>
                   <dt style={{ color: "var(--color-text-muted)" }}>Kimlik belgesi</dt>
                   <dd style={{ margin: 0 }}>
-                    {app.identity_document_path ? "🔒 Süreli bağlantıyla görüntülenir" : "Yüklenmedi"}
+                    {app.identity_document_path
+                      ? app.identity_viewed_at
+                        ? "🔒 Bir kez görüntülendi — erişim kapandı"
+                        : "🔒 Tek seferlik görüntülemeye hazır"
+                      : "Yüklenmedi"}
+                  </dd>
+                </div>
+                <div>
+                  <dt style={{ color: "var(--color-text-muted)" }}>Ses beyanı</dt>
+                  <dd style={{ margin: 0 }}>
+                    {app.voice_declaration_path ? "🎙 Dinlenebilir" : "Yüklenmedi"}
                   </dd>
                 </div>
               </dl>
+
+              {/* Doğrulama medyaları yalnızca süper yöneticiye açılır */}
+              {user.profile.role === "super_admin" && (
+                <VerificationViewer
+                  applicationId={app.id}
+                  hasIdentity={Boolean(app.identity_document_path)}
+                  identityViewedAt={app.identity_viewed_at}
+                  hasVoice={Boolean(app.voice_declaration_path)}
+                  adminUsername={user.profile.username}
+                />
+              )}
 
               {app.review_note && (
                 <p style={{ fontSize: "var(--font-xs)", color: "var(--color-warning)", marginBottom: "var(--space-3)" }}>

@@ -8,9 +8,11 @@ import { getMyApplications } from "@/features/applications/service";
 import { listMembershipsForUser } from "@/features/artists/service";
 import { getSessionUser } from "@/lib/auth/session";
 import { canAccessControlCenter } from "@/lib/permissions";
+import { isDemoMode } from "@/lib/env";
 import { Avatar } from "@/components/ui/Avatar";
 import { StatusChip } from "@/components/ui/Badge";
 import ui from "@/components/ui/ui.module.css";
+import { AvatarUploader, UsernameChanger, VerifyEmailButton } from "./AccountTools";
 
 export const metadata: Metadata = { title: "Hesap" };
 
@@ -46,10 +48,24 @@ export default async function AccountPage() {
             <p style={{ fontSize: "var(--font-xl)", fontWeight: 700 }}>{user.profile.display_name}</p>
             <p style={{ color: "var(--color-text-muted)" }}>@{user.profile.username} · {user.email}</p>
             <StatusChip tone={user.profile.email_verified ? "success" : "warning"}>
-              {user.profile.email_verified ? "E-posta doğrulandı" : "E-posta doğrulanmadı"}
+              {user.profile.email_verified ? "Hesap doğrulandı" : "Hesap doğrulanmadı"}
             </StatusChip>
           </div>
         </div>
+
+        {/* Hesap araçları: doğrulama, fotoğraf, kullanıcı adı */}
+        <div style={{ display: "flex", gap: "var(--space-3)", flexWrap: "wrap", alignItems: "flex-start", marginBottom: "var(--space-6)" }}>
+          <VerifyEmailButton verified={user.profile.email_verified} />
+          <AvatarUploader demoMode={isDemoMode()} />
+          <UsernameChanger currentUsername={user.profile.username} displayName={user.profile.display_name} />
+        </div>
+        {!user.profile.email_verified && (
+          <p style={{ fontSize: "var(--font-xs)", color: "var(--color-text-muted)", marginBottom: "var(--space-6)" }}>
+            Google ile giriş yaptıysan ayrıca doğrulama e-postası gelmez — &quot;Hesabımı doğrula&quot;
+            butonuna basman yeterli. E-posta ile kayıt olduysan buton doğrulama bağlantısını
+            yeniden gönderir.
+          </p>
+        )}
 
         <dl style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "var(--space-4)", margin: 0, fontSize: "var(--font-sm)" }}>
           <div>

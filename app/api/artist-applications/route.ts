@@ -19,6 +19,8 @@ const schema = z.object({
   applicant_relationship: z.enum(["artist", "manager", "label", "team_member"]),
   rights_declaration: z.boolean(),
   additional_notes: z.string().max(2000).optional(),
+  identity_document_path: z.string().max(500).optional(),
+  voice_declaration_path: z.string().max(500).optional(),
 });
 
 export async function POST(req: NextRequest) {
@@ -32,6 +34,12 @@ export async function POST(req: NextRequest) {
       const fieldErrors: Record<string, string> = {};
       for (const issue of parsed.error.issues) fieldErrors[issue.path.join(".")] = issue.message;
       throw new ApiError(ErrorCodes.VALIDATION_FAILED, fieldErrors);
+    }
+    // 22.6: belge yolları yalnızca başvuranın kendi klasörünü gösterebilir
+    for (const p of [parsed.data.identity_document_path, parsed.data.voice_declaration_path]) {
+      if (p && !p.startsWith(`${user.id}/`)) {
+        throw new ApiError(ErrorCodes.PERMISSION_DENIED);
+      }
     }
     const app = await createApplication(parsed.data, user);
     return NextResponse.json(apiSuccess({ id: app.id, status: app.status }), { status: 201 });
