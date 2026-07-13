@@ -82,7 +82,12 @@ export function MobileNav({
           {item.icon}
           <span>{item.label}</span>
           {item.href === "/bildirimler" && notificationCount > 0 && (
-            <span className="sr-only">{notificationCount} okunmamış bildirim</span>
+            <>
+              <span className={styles.mobileBadge} aria-hidden="true">
+                {notificationCount > 9 ? "9+" : notificationCount}
+              </span>
+              <span className="sr-only">{notificationCount} okunmamış bildirim</span>
+            </>
           )}
         </Link>
       ))}

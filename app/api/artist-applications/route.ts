@@ -6,6 +6,7 @@ import { createApplication } from "@/features/applications/service";
 import { requireUser } from "@/lib/auth/session";
 import { apiFailure, apiSuccess, ApiError, ErrorCodes } from "@/lib/errors";
 import { checkRateLimit } from "@/lib/rate-limit";
+import { isDemoMode } from "@/lib/env";
 
 const schema = z.object({
   stage_name: z.string().min(2).max(80),
@@ -26,6 +27,7 @@ const schema = z.object({
 export async function POST(req: NextRequest) {
   try {
     const user = await requireUser();
+    if (!user.profile.email_verified) throw new ApiError(ErrorCodes.EMAIL_NOT_VERIFIED);
     if (!checkRateLimit("artist_application", user.id)) {
       throw new ApiError(ErrorCodes.RATE_LIMITED);
     }
@@ -35,9 +37,25 @@ export async function POST(req: NextRequest) {
       for (const issue of parsed.error.issues) fieldErrors[issue.path.join(".")] = issue.message;
       throw new ApiError(ErrorCodes.VALIDATION_FAILED, fieldErrors);
     }
-    // 22.6: belge yolları yalnızca başvuranın kendi klasörünü gösterebilir
-    for (const p of [parsed.data.identity_document_path, parsed.data.voice_declaration_path]) {
-      if (p && !p.startsWith(`${user.id}/`)) {
+    if (!isDemoMode()) {
+      const evidenceErrors: Record<string, string> = {};
+      if (!parsed.data.identity_document_path) {
+        evidenceErrors.identity_document_path = "Kimlik fotoğrafı gerekli.";
+      }
+      if (!parsed.data.voice_declaration_path) {
+        evidenceErrors.voice_declaration_path = "Sesli beyan gerekli.";
+      }
+      if (Object.keys(evidenceErrors).length > 0) {
+        throw new ApiError(ErrorCodes.VALIDATION_FAILED, evidenceErrors);
+      }
+    }
+
+    const expectedPaths = [
+      [parsed.data.identity_document_path, `${user.id}/identity-`],
+      [parsed.data.voice_declaration_path, `${user.id}/voice-`],
+    ] as const;
+    for (const [path, prefix] of expectedPaths) {
+      if (path && (!path.startsWith(prefix) || path.includes(".."))) {
         throw new ApiError(ErrorCodes.PERMISSION_DENIED);
       }
     }

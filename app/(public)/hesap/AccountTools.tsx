@@ -10,14 +10,44 @@
  */
 
 import { useRouter } from "next/navigation";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Button } from "@/components/ui/Button";
 import { SEARCH_DEBOUNCE_MS } from "@/lib/validation";
 
-export function VerifyEmailButton({ verified }: { verified: boolean }) {
+export function VerifyEmailButton({
+  verified,
+  provider,
+}: {
+  verified: boolean;
+  provider: string;
+}) {
   const router = useRouter();
   const [state, setState] = useState<"idle" | "busy" | "done" | "resent" | "error">("idle");
   const [message, setMessage] = useState<string | null>(null);
+  const [cooldown, setCooldown] = useState(0);
+  const cooldownTimer = useRef<ReturnType<typeof setInterval> | null>(null);
+
+  useEffect(
+    () => () => {
+      if (cooldownTimer.current) clearInterval(cooldownTimer.current);
+    },
+    []
+  );
+
+  function startCooldown(seconds: number) {
+    if (cooldownTimer.current) clearInterval(cooldownTimer.current);
+    setCooldown(seconds);
+    cooldownTimer.current = setInterval(() => {
+      setCooldown((value) => {
+        if (value <= 1) {
+          if (cooldownTimer.current) clearInterval(cooldownTimer.current);
+          cooldownTimer.current = null;
+          return 0;
+        }
+        return value - 1;
+      });
+    }, 1000);
+  }
 
   if (verified) return null;
 
@@ -32,6 +62,7 @@ export function VerifyEmailButton({ verified }: { verified: boolean }) {
         router.refresh();
       } else if (json.success && json.data.resent) {
         setState("resent");
+        startCooldown(json.data.retry_after_seconds ?? 60);
         setMessage("Doğrulama e-postası gönderildi — gelen kutunu (ve spam klasörünü) kontrol et.");
       } else {
         setState("error");
@@ -45,8 +76,19 @@ export function VerifyEmailButton({ verified }: { verified: boolean }) {
 
   return (
     <span style={{ display: "inline-flex", flexDirection: "column", gap: 6 }}>
-      <Button variant="secondary" onClick={verify} loading={state === "busy"}>
-        {state === "done" ? "Doğrulandı ✓" : "Hesabımı doğrula"}
+      <Button
+        variant="secondary"
+        onClick={verify}
+        loading={state === "busy"}
+        disabled={cooldown > 0}
+      >
+        {state === "done"
+          ? "Doğrulandı ✓"
+          : cooldown > 0
+            ? `Tekrar gönder (${cooldown} sn)`
+            : provider === "google"
+              ? "Hesabımı doğrula"
+              : "Doğrulama e-postasını yeniden gönder"}
       </Button>
       {message && (
         <span

@@ -12,13 +12,23 @@ import { requireUser } from "@/lib/auth/session";
 import { createSupabaseAdminClient, createSupabaseServerClient } from "@/lib/database/supabase-server";
 import { isDemoMode } from "@/lib/env";
 import { apiFailure, apiSuccess, ApiError, ErrorCodes } from "@/lib/errors";
+import { authCallbackUrl } from "@/lib/auth/redirects";
+import { checkRateLimit } from "@/lib/rate-limit";
 
 export async function POST() {
   try {
     const user = await requireUser();
 
     if (isDemoMode()) {
-      return NextResponse.json(apiSuccess({ email_verified: true, resent: false }));
+      return NextResponse.json(apiSuccess({ email_verified: true, resent: false, provider: "demo" }));
+    }
+
+    if (!checkRateLimit("email_verification", user.id)) {
+      throw new ApiError(
+        ErrorCodes.RATE_LIMITED,
+        undefined,
+        "Çok sık doğrulama e-postası istedin. Birkaç dakika sonra tekrar dene."
+      );
     }
 
     const supabase = await createSupabaseServerClient();
@@ -33,19 +43,31 @@ export async function POST() {
     if (confirmed) {
       // Auth kaydı doğrulanmış — profili senkronla (service role; RLS'e takılmaz)
       const admin = createSupabaseAdminClient();
-      await admin.from("profiles").update({ email_verified: true }).eq("id", user.id);
-      return NextResponse.json(apiSuccess({ email_verified: true, resent: false }));
+      const { error } = await admin
+        .from("profiles")
+        .update({ email_verified: true })
+        .eq("id", user.id);
+      if (error) throw new ApiError(ErrorCodes.UNKNOWN_ERROR);
+      return NextResponse.json(apiSuccess({ email_verified: true, resent: false, provider }));
     }
 
     // Henüz doğrulanmamış e-posta kullanıcısı: doğrulama e-postasını yeniden gönder
     const { error } = await supabase.auth.resend({
       type: "signup",
       email: authUser.email ?? user.email,
+      options: { emailRedirectTo: authCallbackUrl("/hesap?dogrulandi=1") },
     });
     if (error) throw new ApiError(ErrorCodes.RATE_LIMITED, undefined,
       "Doğrulama e-postası şu anda gönderilemedi. Birkaç dakika sonra tekrar dene.");
 
-    return NextResponse.json(apiSuccess({ email_verified: false, resent: true }));
+    return NextResponse.json(
+      apiSuccess({
+        email_verified: false,
+        resent: true,
+        provider,
+        retry_after_seconds: 60,
+      })
+    );
   } catch (error) {
     const { body, status } = apiFailure(error);
     return NextResponse.json(body, { status });

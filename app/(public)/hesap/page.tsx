@@ -55,7 +55,10 @@ export default async function AccountPage() {
 
         {/* Hesap araçları: doğrulama, fotoğraf, kullanıcı adı */}
         <div style={{ display: "flex", gap: "var(--space-3)", flexWrap: "wrap", alignItems: "flex-start", marginBottom: "var(--space-6)" }}>
-          <VerifyEmailButton verified={user.profile.email_verified} />
+          <VerifyEmailButton
+            verified={user.profile.email_verified}
+            provider={user.auth_provider ?? "email"}
+          />
           <AvatarUploader demoMode={isDemoMode()} />
           <UsernameChanger currentUsername={user.profile.username} displayName={user.profile.display_name} />
         </div>

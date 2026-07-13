@@ -27,6 +27,7 @@ const VOICE_MIME_TYPES = [...AUDIO_MIME_TYPES, "audio/webm", "audio/webm;codecs=
 export async function POST(req: NextRequest) {
   try {
     const user = await requireUser();
+    if (!user.profile.email_verified) throw new ApiError(ErrorCodes.EMAIL_NOT_VERIFIED);
     if (!checkRateLimit("media_upload", user.id)) throw new ApiError(ErrorCodes.RATE_LIMITED);
 
     if (isDemoMode()) {

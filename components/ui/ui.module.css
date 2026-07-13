@@ -16,7 +16,8 @@
     background-color var(--duration-fast) var(--ease-standard),
     border-color var(--duration-fast) var(--ease-standard),
     color var(--duration-fast) var(--ease-standard),
-    transform var(--duration-instant) var(--ease-standard);
+    transform var(--duration-instant) var(--ease-standard),
+    filter var(--duration-fast) var(--ease-standard);
   white-space: nowrap;
 }
 
@@ -173,6 +174,15 @@
   color: var(--color-text-muted);
   text-transform: none;
   letter-spacing: 0;
+}
+
+@media (max-width: 479px) {
+  .sectionTitle {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: var(--space-1);
+    font-size: var(--font-xl);
+  }
 }
 
 /* Durum etiketi */

@@ -10,7 +10,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import type { SessionUser } from "@/types";
 import { Avatar } from "@/components/ui/Avatar";
 import styles from "./nav.module.css";
@@ -32,12 +32,27 @@ export function TopNav({
 }) {
   const pathname = usePathname();
   const [compact, setCompact] = useState(false);
+  const compactRef = useRef(false);
+  const frameRef = useRef<number | null>(null);
 
   useEffect(() => {
-    const onScroll = () => setCompact(window.scrollY > 24);
-    onScroll();
+    const update = () => {
+      frameRef.current = null;
+      const next = window.scrollY > 24;
+      if (next !== compactRef.current) {
+        compactRef.current = next;
+        setCompact(next);
+      }
+    };
+    const onScroll = () => {
+      if (frameRef.current === null) frameRef.current = window.requestAnimationFrame(update);
+    };
+    update();
     window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      if (frameRef.current !== null) window.cancelAnimationFrame(frameRef.current);
+    };
   }, []);
 
   // Panel sayfalarında kendi navigasyonları vardır

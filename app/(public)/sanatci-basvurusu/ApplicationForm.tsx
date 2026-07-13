@@ -27,6 +27,13 @@ const PROCESS_STEPS = [
   ["Profil açılışı", "Onayla birlikte doğrulanmış sanatçı profilin ve Artist Studio panelin otomatik açılır; bildirim gönderilir."],
 ] as const;
 
+const PREFERRED_RECORDING_TYPES = [
+  "audio/webm;codecs=opus",
+  "audio/mp4;codecs=mp4a.40.2",
+  "audio/mp4",
+  "audio/webm",
+] as const;
+
 /* ---------- Ses beyanı kaydedici ---------- */
 
 function VoiceRecorder({
@@ -63,11 +70,27 @@ function VoiceRecorder({
 
   async function start() {
     try {
-      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-      const recorder = new MediaRecorder(stream);
+      const stream = await navigator.mediaDevices.getUserMedia({
+        audio: {
+          channelCount: { ideal: 1 },
+          sampleRate: { ideal: 48_000 },
+          echoCancellation: true,
+          noiseSuppression: true,
+          autoGainControl: true,
+        },
+      });
+      const mimeType = PREFERRED_RECORDING_TYPES.find((type) =>
+        MediaRecorder.isTypeSupported(type)
+      );
+      const recorder = new MediaRecorder(stream, {
+        ...(mimeType ? { mimeType } : {}),
+        audioBitsPerSecond: 256_000,
+      });
       recorderRef.current = recorder;
       chunksRef.current = [];
-      recorder.ondataavailable = (e) => chunksRef.current.push(e.data);
+      recorder.ondataavailable = (e) => {
+        if (e.data.size > 0) chunksRef.current.push(e.data);
+      };
       recorder.onstop = () => {
         const blob = new Blob(chunksRef.current, { type: recorder.mimeType || "audio/webm" });
         const url = URL.createObjectURL(blob);
@@ -76,7 +99,7 @@ function VoiceRecorder({
         setState("recorded");
         stream.getTracks().forEach((t) => t.stop());
       };
-      recorder.start();
+      recorder.start(250);
       setSeconds(0);
       timerRef.current = setInterval(() => {
         setSeconds((s) => {
@@ -138,7 +161,7 @@ function VoiceRecorder({
         )}
         {state === "recorded" && audioUrl && (
           <>
-            <audio controls src={audioUrl} style={{ height: 40 }} />
+            <audio controls src={audioUrl} style={{ height: 40, maxWidth: "100%" }} />
             <Button type="button" variant="ghost" onClick={reset}>
               Yeniden kaydet
             </Button>
@@ -161,7 +184,8 @@ export function ApplicationForm({ demoMode }: { demoMode: boolean }) {
 
   async function uploadVerification(kind: "identity" | "voice", data: Blob): Promise<string> {
     const fd = new FormData();
-    const filename = kind === "identity" ? "kimlik.jpg" : "beyan.webm";
+    const voiceExtension = data.type.includes("mp4") ? "m4a" : "webm";
+    const filename = kind === "identity" ? "kimlik.jpg" : `beyan.${voiceExtension}`;
     fd.append(
       "file",
       new File([data], filename, {
@@ -328,7 +352,7 @@ export function ApplicationForm({ demoMode }: { demoMode: boolean }) {
         {err("legal_name")}
       </label>
 
-      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "var(--space-4)" }}>
+      <div className="responsive-grid-2">
         <label style={{ display: "grid", gap: 6, fontSize: "var(--font-sm)" }}>
           İletişim e-postası *
           <input name="contact_email" type="email" required style={inputStyle} />
@@ -365,7 +389,7 @@ export function ApplicationForm({ demoMode }: { demoMode: boolean }) {
         <textarea name="distribution_links" rows={3} placeholder="https://..." style={{ ...inputStyle, resize: "vertical" }} />
       </label>
 
-      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "var(--space-4)" }}>
+      <div className="responsive-grid-2">
         <label style={{ display: "grid", gap: 6, fontSize: "var(--font-sm)" }}>
           Label (isteğe bağlı)
           <input name="label_name_optional" maxLength={120} style={inputStyle} />

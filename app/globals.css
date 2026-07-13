@@ -15,17 +15,35 @@
 html {
   color-scheme: dark;
   -webkit-text-size-adjust: 100%;
+  scroll-behavior: smooth;
 }
 
 body {
   margin: 0;
-  background-color: var(--color-bg-primary);
+  background:
+    linear-gradient(90deg, rgba(var(--artist-accent-rgb), 0.025), transparent 26%, transparent 74%, rgba(101, 167, 255, 0.02)),
+    var(--color-bg-primary);
   color: var(--color-text-primary);
   font-family: var(--font-family-interface);
   font-size: var(--font-md);
   line-height: 1.55;
   min-height: 100dvh;
   overflow-x: hidden;
+}
+
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.018;
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.3) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.22) 1px, transparent 1px);
+  background-size: 64px 64px;
+  -webkit-mask-image: linear-gradient(to bottom, transparent, #000 18%, #000 82%, transparent);
+  mask-image: linear-gradient(to bottom, transparent, #000 18%, #000 82%, transparent);
 }
 
 /* 18.1 Doku katmanı — çok hafif film grain (opaklık %2–7 aralığında) */
@@ -70,6 +88,26 @@ video {
   display: block;
 }
 
+* {
+  scrollbar-color: var(--color-border-strong) var(--color-bg-primary);
+  scrollbar-width: thin;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--color-bg-primary);
+}
+
+::-webkit-scrollbar-thumb {
+  border: 3px solid var(--color-bg-primary);
+  border-radius: var(--radius-pill);
+  background: var(--color-border-strong);
+}
+
 input,
 textarea,
 select {
@@ -111,9 +149,19 @@ select {
   padding-inline: var(--space-6);
 }
 
+.responsive-grid-2 {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-4);
+}
+
 @media (max-width: 767px) {
   .container {
     padding-inline: var(--space-4);
+  }
+
+  .responsive-grid-2 {
+    grid-template-columns: minmax(0, 1fr);
   }
 }
 
@@ -145,6 +193,7 @@ select {
 
 .page-enter {
   animation: page-enter var(--duration-normal) var(--ease-enter) both;
+  backface-visibility: hidden;
 }
 
 /* Görsel yükleme geçişi — 18.4 */

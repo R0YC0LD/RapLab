@@ -21,6 +21,7 @@ export const RATE_LIMITS = {
   login: [10, 60_000],
   register: [5, 60_000],
   password_reset: [3, 60_000],
+  email_verification: [3, 10 * 60_000],
   like: [60, 60_000],
   follow: [30, 60_000],
   search: [40, 60_000],

@@ -48,7 +48,12 @@ export async function getSessionUser(): Promise<SessionUser | null> {
     .single();
 
   if (!profile) return null;
-  return { id: user.id, email: user.email ?? "", profile: profile as Profile };
+  return {
+    id: user.id,
+    email: user.email ?? "",
+    auth_provider: String(user.app_metadata?.provider ?? "email"),
+    profile: profile as Profile,
+  };
 }
 
 export async function requireUser(): Promise<SessionUser> {

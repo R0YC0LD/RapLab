@@ -13,6 +13,7 @@ import { DEMO_PERSONAS, DEMO_SESSION_COOKIE } from "@/lib/auth/session";
 import { createSupabaseServerClient } from "@/lib/database/supabase-server";
 import { isDemoMode } from "@/lib/env";
 import { registrationSchema } from "@/lib/validation";
+import { authCallbackUrl } from "@/lib/auth/redirects";
 
 export interface AuthActionResult {
   ok: boolean;
@@ -84,6 +85,7 @@ export async function registerWithEmail(formData: FormData): Promise<AuthActionR
     email: parsed.data.email,
     password: parsed.data.password,
     options: {
+      emailRedirectTo: authCallbackUrl("/hesap?dogrulandi=1"),
       data: {
         username: parsed.data.username,
         display_name: parsed.data.display_name,
@@ -131,7 +133,7 @@ export async function signInWithGoogle(): Promise<AuthActionResult> {
   const { data, error } = await supabase.auth.signInWithOAuth({
     provider: "google",
     options: {
-      redirectTo: `${process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000"}/api/auth/callback`,
+      redirectTo: authCallbackUrl(),
     },
   });
   if (error || !data.url) {

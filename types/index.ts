@@ -408,5 +408,6 @@ export type ApiResponse<T> = ApiSuccess<T> | ApiFailure;
 export interface SessionUser {
   id: string;
   email: string;
+  auth_provider?: string;
   profile: Profile;
 }

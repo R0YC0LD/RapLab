@@ -1,6 +1,7 @@
 /** Sanatçı doğrulama başvurusu — Şartname 12.1 */
 
 import type { Metadata } from "next";
+import Link from "next/link";
 import { redirect } from "next/navigation";
 import { getSessionUser } from "@/lib/auth/session";
 import { getFeatureFlags } from "@/features/moderation/service";
@@ -22,7 +23,20 @@ export default async function ApplicationPage() {
         Sanatçı Başvurusu <span>doğrulanmış profil için</span>
       </h1>
 
-      {!flags.artist_applications_enabled ? (
+      {!user.profile.email_verified ? (
+        <div className={ui.card} style={{ padding: "var(--space-8)" }}>
+          <h2 style={{ fontSize: "var(--font-lg)", marginBottom: "var(--space-2)" }}>
+            Önce hesabını doğrula
+          </h2>
+          <p style={{ color: "var(--color-text-secondary)", marginBottom: "var(--space-5)" }}>
+            Sanatçı doğrulama belgelerini göndermeden önce e-posta hesabının sana ait
+            olduğunu doğrulamamız gerekiyor.
+          </p>
+          <Link href="/hesap" className={ui.button + " " + ui.buttonPrimary}>
+            Hesaba git
+          </Link>
+        </div>
+      ) : !flags.artist_applications_enabled ? (
         <p className={ui.card} style={{ padding: "var(--space-8)", color: "var(--color-text-secondary)" }}>
           Sanatçı başvuruları şu anda kapalı. Daha sonra tekrar dene.
         </p>

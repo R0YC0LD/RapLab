@@ -6,6 +6,7 @@ import { isDemoMode } from "@/lib/env";
 import { TopNav } from "@/components/navigation/TopNav";
 import { MobileNav } from "@/components/navigation/MobileNav";
 import { DemoBanner } from "@/components/ui/DemoBanner";
+import { SiteExperience } from "@/components/experience/SiteExperience";
 import "./globals.css";
 
 /* 17.3 Tipografi: Display — büyük, yoğun, karakterli */
@@ -59,6 +60,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
           {children}
         </main>
         <MobileNav user={user} notificationCount={notificationCount} />
+        <SiteExperience />
         <footer
           style={{
             position: "relative",

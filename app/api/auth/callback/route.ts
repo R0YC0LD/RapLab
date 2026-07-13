@@ -2,12 +2,14 @@
 
 import { NextRequest, NextResponse } from "next/server";
 import { isProfileComplete } from "@/lib/auth/profile-completion";
+import { safeRelativePath } from "@/lib/auth/redirects";
 import { createSupabaseServerClient } from "@/lib/database/supabase-server";
 import { isDemoMode } from "@/lib/env";
 
 export async function GET(req: NextRequest) {
   const url = new URL(req.url);
   const code = url.searchParams.get("code");
+  const nextPath = safeRelativePath(url.searchParams.get("next"));
 
   if (isDemoMode() || !code) {
     return NextResponse.redirect(new URL("/giris", url.origin));
@@ -35,6 +37,6 @@ export async function GET(req: NextRequest) {
 
   // 11.3: ilk giriş akışı — yalnızca profil gerçekten eksikse onboarding'e yönlendir
   return NextResponse.redirect(
-    new URL(profile && isProfileComplete(profile) ? "/" : "/hosgeldin", url.origin)
+    new URL(profile && isProfileComplete(profile) ? nextPath : "/hosgeldin", url.origin)
   );
 }

@@ -11,6 +11,8 @@
   transition:
     transform var(--duration-fast) var(--ease-standard),
     border-color var(--duration-fast) var(--ease-standard);
+  content-visibility: auto;
+  contain-intrinsic-block-size: 460px;
 }
 
 @media (hover: hover) {
