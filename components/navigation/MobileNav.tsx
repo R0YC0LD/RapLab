@@ -10,12 +10,11 @@ const ITEMS: {
   href: string;
   label: string;
   icon: LucideIcon;
-  beat: "kick" | "snare" | "hat" | "bass";
 }[] = [
-  { href: "/", label: "Ana Sayfa", icon: House, beat: "kick" },
-  { href: "/sanatsal", label: "Sanatsal", icon: Images, beat: "bass" },
-  { href: "/sanatcilar", label: "Sanatçılar", icon: Mic2, beat: "snare" },
-  { href: "/bildirimler", label: "Bildirimler", icon: Bell, beat: "hat" },
+  { href: "/", label: "Ana Sayfa", icon: House },
+  { href: "/sanatsal", label: "Sanatsal", icon: Images },
+  { href: "/sanatcilar", label: "Sanatçılar", icon: Mic2 },
+  { href: "/bildirimler", label: "Bildirimler", icon: Bell },
 ];
 
 export function MobileNav({
@@ -41,7 +40,6 @@ export function MobileNav({
             href={item.href}
             className={`${styles.mobileLink} ${pathname === item.href ? styles.mobileLinkActive : ""}`}
             aria-current={pathname === item.href ? "page" : undefined}
-            data-beat-instrument={item.beat}
           >
             <Icon size={20} strokeWidth={1.9} aria-hidden="true" />
             <span>{item.label}</span>
@@ -59,7 +57,6 @@ export function MobileNav({
       <Link
         href={user ? "/hesap" : "/giris"}
         className={`${styles.mobileLink} ${pathname === "/hesap" || pathname === "/giris" ? styles.mobileLinkActive : ""}`}
-        data-beat-instrument="bass"
       >
         <UserRound size={20} strokeWidth={1.9} aria-hidden="true" />
         <span>{user ? "Profil" : "Giriş"}</span>

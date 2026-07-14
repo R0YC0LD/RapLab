@@ -64,7 +64,6 @@ export function TopNav({
             href="/"
             className={`${styles.logo} ${compact ? styles.logoCompact : ""}`}
             aria-label="RapLab ana sayfa"
-            data-beat-instrument="kick"
           >
             RAP<em>LAB</em>
           </Link>
@@ -88,7 +87,6 @@ export function TopNav({
               href="/arama"
               className={styles.iconButton}
               aria-label="Arama"
-              data-beat-instrument="hat"
             >
               <Search size={19} strokeWidth={2} aria-hidden="true" />
             </Link>
@@ -99,7 +97,6 @@ export function TopNav({
                   href="/bildirimler"
                   className={styles.iconButton}
                   aria-label={`Bildirimler${notificationCount > 0 ? ` (${notificationCount} okunmamış)` : ""}`}
-                  data-beat-instrument="snare"
                 >
                   <Bell size={19} strokeWidth={1.9} aria-hidden="true" />
                   {notificationCount > 0 && (
@@ -110,7 +107,6 @@ export function TopNav({
                   href="/hesap"
                   aria-label="Profil ve hesap ayarları"
                   style={{ display: "inline-flex", borderRadius: "50%" }}
-                  data-beat-instrument="bass"
                 >
                   <Avatar src={user.profile.avatar_path} alt={user.profile.display_name} size={36} />
                 </Link>
@@ -123,7 +119,6 @@ export function TopNav({
                   border: "1px solid var(--color-border-strong)",
                   color: "var(--color-text-primary)",
                 }}
-                data-beat-instrument="bass"
               >
                 Giriş / Kayıt
               </Link>

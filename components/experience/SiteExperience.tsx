@@ -27,9 +27,17 @@ import {
 } from "@/lib/audio/raplab-808";
 import styles from "./experience.module.css";
 
-type UiSound = "tap" | "navigate" | "success";
+type UiSound = "tap" | "success";
 
 const LIVE_PATHS = new Set(["/", "/kesfet", "/son-paylasimlar", "/yaklasanlar", "/bildirimler"]);
+const BEAT_LAB_PATHS = new Set([
+  "/kesfet",
+  "/sanatcilar",
+  "/sanatsal",
+  "/son-paylasimlar",
+  "/yaklasanlar",
+  "/raplab-ozel",
+]);
 const SOUND_STORAGE_KEY = "raplab-ui-sound";
 const BEAT_STORAGE_KEY = "raplab-808-state-v1";
 const LIVE_REFRESH_MS = 60_000;
@@ -54,6 +62,7 @@ function isBeatInstrument(value: string | undefined): value is BeatInstrument {
 export function SiteExperience() {
   const pathname = usePathname();
   const router = useRouter();
+  const beatLabEnabled = BEAT_LAB_PATHS.has(pathname);
   const [soundEnabled, setSoundEnabled] = useState(false);
   const [panelOpen, setPanelOpen] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
@@ -177,9 +186,6 @@ export function SiteExperience() {
       if (kind === "success") {
         engine.trigger("snare", now, 0.72);
         engine.trigger("hat", now + 0.075, 0.74);
-      } else if (kind === "navigate") {
-        engine.trigger("hat", now, 0.52);
-        engine.trigger("bass", now + 0.025, 0.34, 3);
       } else {
         engine.trigger("hat", now, 0.42);
       }
@@ -226,6 +232,15 @@ export function SiteExperience() {
   }, [bpm, hasLoadedPreferences, pattern, volume]);
 
   useEffect(() => {
+    if (beatLabEnabled) return;
+    const timer = window.setTimeout(() => {
+      setPanelOpen(false);
+      stopTransport();
+    }, 0);
+    return () => window.clearTimeout(timer);
+  }, [beatLabEnabled, stopTransport]);
+
+  useEffect(() => {
     if (!soundEnabled) return;
 
     const onClick = (event: MouseEvent) => {
@@ -242,18 +257,13 @@ export function SiteExperience() {
       }
 
       const instrument = interactive.dataset.beatInstrument;
-      if (isBeatInstrument(instrument)) {
-        void triggerBeat(instrument);
-        return;
-      }
-
-      const requested = interactive.dataset.uiSound as UiSound | undefined;
-      void playUiSound(requested ?? (interactive.matches("a[href]") ? "navigate" : "tap"));
+      if (!isBeatInstrument(instrument)) return;
+      void triggerBeat(instrument);
     };
 
     document.addEventListener("click", onClick, true);
     return () => document.removeEventListener("click", onClick, true);
-  }, [playUiSound, soundEnabled, triggerBeat]);
+  }, [soundEnabled, triggerBeat]);
 
   useEffect(() => {
     if (!LIVE_PATHS.has(pathname)) return;
@@ -341,7 +351,7 @@ export function SiteExperience() {
         <span />
       </div>
 
-      {panelOpen && (
+      {beatLabEnabled && panelOpen && (
         <section
           id="raplab-808-panel"
           className={styles.beatPanel}
@@ -471,7 +481,7 @@ export function SiteExperience() {
         </section>
       )}
 
-      {!panelOpen && (
+      {beatLabEnabled && !panelOpen && (
         <button
           type="button"
           className={`${styles.beatLauncher} ${soundEnabled ? styles.beatLauncherActive : ""}`}
