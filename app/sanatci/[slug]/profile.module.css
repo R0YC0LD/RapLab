@@ -69,10 +69,15 @@
 }
 
 .artistName {
-  font-family: var(--font-family-display);
+  font-family: var(--font-family-street);
+  font-weight: 400;
   font-size: var(--font-display-sm);
   text-transform: uppercase;
   line-height: 0.95;
+  letter-spacing: 0;
+  text-shadow:
+    3px 3px 0 rgba(8, 9, 11, 0.9),
+    0 0 20px rgba(var(--artist-accent-rgb), 0.2);
   animation: name-appear 640ms var(--ease-enter) 80ms both;
 }
 

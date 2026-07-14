@@ -56,14 +56,18 @@
 }
 
 .heroName {
-  font-family: var(--font-family-display);
+  font-family: var(--font-family-street);
+  font-weight: 400;
   font-size: var(--font-display-lg);
   line-height: 0.92;
   text-transform: uppercase;
-  letter-spacing: -0.01em;
+  letter-spacing: 0;
   margin-bottom: var(--space-4);
   max-width: 14ch;
   overflow-wrap: anywhere;
+  text-shadow:
+    3px 4px 0 rgba(8, 9, 11, 0.9),
+    0 0 22px rgba(var(--artist-accent-rgb), 0.22);
 }
 
 .heroTagline {

@@ -1,5 +1,7 @@
 "use client";
 
+/* eslint-disable @next/next/no-img-element -- Blob on izlemeleri Next Image optimizasyonundan gecmez. */
+
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/Button";
@@ -44,7 +46,7 @@ export function FanArtComposer({ artists, demoMode }: { artists: { id: string; s
           setPreview(next ? URL.createObjectURL(next) : null);
         }} />
       </label>
-      {preview && <div className={styles.artFrame} style={{ maxWidth: 420 }}>{/* eslint-disable-next-line @next/next/no-img-element */}<img className={styles.artImage} src={preview} alt="Paylaşım ön izlemesi" /></div>}
+      {preview && <div className={styles.artFrame} style={{ maxWidth: 420 }}><img className={styles.artImage} src={preview} alt="Paylaşım ön izlemesi" /></div>}
       <label className={styles.field}>Kısa not
         <textarea name="caption" className={styles.input} maxLength={600} rows={4} placeholder="Çalışmanın fikrini veya tekniğini anlat." />
       </label>

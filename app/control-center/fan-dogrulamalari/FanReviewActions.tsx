@@ -1,5 +1,7 @@
 "use client";
 
+/* eslint-disable @next/next/no-img-element -- Kisa omurlu imzali yonetici URL'leri optimize edilmez. */
+
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/Button";
@@ -37,7 +39,7 @@ export function FanReviewActions({ verificationId, canDecide }: { verificationId
 
   return <div style={{ display: "grid", gap: "var(--space-3)" }}>
     <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}><Button variant="secondary" loading={busy === "sample"} onClick={() => media("sample")}>Örnek görseli aç</Button><Button variant="secondary" loading={busy === "voice"} onClick={() => media("voice")}>Sesli beyanı dinle</Button></div>
-    {sampleUrl && <div style={{ maxWidth: 420, aspectRatio: "4 / 5", background: "#050607", display: "grid", placeItems: "center", overflow: "hidden" }}>{/* eslint-disable-next-line @next/next/no-img-element */}<img src={sampleUrl} alt="Fan doğrulama örnek görseli" style={{ width: "100%", height: "100%", objectFit: "contain" }} /></div>}
+    {sampleUrl && <div style={{ maxWidth: 420, aspectRatio: "4 / 5", background: "#050607", display: "grid", placeItems: "center", overflow: "hidden" }}><img src={sampleUrl} alt="Fan doğrulama örnek görseli" style={{ width: "100%", height: "100%", objectFit: "contain" }} /></div>}
     {voiceUrl && <audio controls autoPlay src={voiceUrl} style={{ maxWidth: "100%" }} />}
     {canDecide && <><input value={note} onChange={(event) => setNote(event.target.value)} placeholder="İnceleme notu / ret gerekçesi" style={{ padding: 12, border: "1px solid var(--color-border-soft)", borderRadius: "var(--radius-sm)", background: "var(--color-bg-elevated)", color: "inherit" }} /><div style={{ display: "flex", gap: 8 }}><Button loading={busy === "approved"} onClick={() => review("approved")}>Fanı onayla</Button><Button variant="danger" loading={busy === "rejected"} onClick={() => review("rejected")}>Reddet</Button></div></>}
     {error && <p role="alert" style={{ color: "var(--color-danger)", fontSize: "var(--font-sm)" }}>{error}</p>}

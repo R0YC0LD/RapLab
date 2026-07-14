@@ -132,7 +132,7 @@ export function AvatarUploader({
     const fd = new FormData();
     fd.append("file", file);
     try {
-      const { json } = await uploadFormWithTimeout("/api/profile/avatar", fd);
+      const { json } = await uploadFormWithTimeout<{ avatar_path: string }>("/api/profile/avatar", fd);
       if (json.success) {
         setPreview(json.data.avatar_path);
         setState("done");

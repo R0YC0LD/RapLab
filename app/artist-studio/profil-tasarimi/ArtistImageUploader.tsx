@@ -51,7 +51,7 @@ export function ArtistImageUploader({
     fd.append("file", file);
     fd.append("kind", activeKind);
     try {
-      const { json } = await uploadFormWithTimeout(`/api/artists/${artistId}/image`, fd, 60_000);
+      const { json } = await uploadFormWithTimeout<{ path: string }>(`/api/artists/${artistId}/image`, fd, 60_000);
       if (json.success) {
         setPreviews((value) => ({ ...value, [activeKind]: json.data.path }));
         setMessage({ tone: "ok", text: "Görsel güncellendi." });

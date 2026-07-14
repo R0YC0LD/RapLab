@@ -1,5 +1,13 @@
 const IMAGE_TYPES = new Set(["image/jpeg", "image/png", "image/webp", "image/avif"]);
 
+type UploadResponse<TData extends object> =
+  | { success: true; data: TData; request_id?: string }
+  | {
+      success: false;
+      error?: { message?: string; field_errors?: Record<string, string> };
+      request_id?: string;
+    };
+
 export function validateImageSelection(file: File, maxBytes: number): string | null {
   if (!IMAGE_TYPES.has(file.type)) return "JPEG, PNG, WebP veya AVIF görseli seç.";
   if (file.size <= 0) return "Seçilen dosya boş.";
@@ -9,19 +17,19 @@ export function validateImageSelection(file: File, maxBytes: number): string | n
   return null;
 }
 
-export async function uploadFormWithTimeout(
+export async function uploadFormWithTimeout<TData extends object = Record<string, never>>(
   url: string,
   form: FormData,
   timeoutMs = 45_000
-): Promise<{ response: Response; json: Record<string, any> }> {
+): Promise<{ response: Response; json: UploadResponse<TData> }> {
   const controller = new AbortController();
   const timeout = window.setTimeout(() => controller.abort(), timeoutMs);
   try {
     const response = await fetch(url, { method: "POST", body: form, signal: controller.signal });
     const text = await response.text();
-    let json: Record<string, any>;
+    let json: UploadResponse<TData>;
     try {
-      json = JSON.parse(text) as Record<string, any>;
+      json = JSON.parse(text) as UploadResponse<TData>;
     } catch {
       json = { success: false, error: { message: "Sunucudan geçersiz yanıt alındı." } };
     }

@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Anton, Space_Grotesk, Lora } from "next/font/google";
+import { Anton, Lora, Rubik_Wet_Paint, Space_Grotesk } from "next/font/google";
 import { getSessionUser } from "@/lib/auth/session";
 import { unreadCount } from "@/features/notifications/service";
 import { isDemoMode } from "@/lib/env";
@@ -14,6 +14,14 @@ const displayFont = Anton({
   weight: "400",
   subsets: ["latin", "latin-ext"],
   variable: "--font-display",
+  display: "swap",
+});
+
+/* Street — marka, kamusal basliklar ve sanatci isimleri */
+const streetFont = Rubik_Wet_Paint({
+  weight: "400",
+  subsets: ["latin", "latin-ext"],
+  variable: "--font-street",
   display: "swap",
 });
 
@@ -52,7 +60,10 @@ export default async function RootLayout({ children }: { children: React.ReactNo
   const demo = isDemoMode();
 
   return (
-    <html lang="tr" className={`${displayFont.variable} ${interfaceFont.variable} ${readingFont.variable}`}>
+    <html
+      lang="tr"
+      className={`${displayFont.variable} ${streetFont.variable} ${interfaceFont.variable} ${readingFont.variable}`}
+    >
       <body>
         {demo && <DemoBanner />}
         <TopNav user={user} notificationCount={notificationCount} />

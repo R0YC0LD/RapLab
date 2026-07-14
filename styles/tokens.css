@@ -48,6 +48,7 @@
 
   /* 17.3 Tipografi katmanları */
   --font-family-display: var(--font-display), "Arial Black", "Segoe UI", sans-serif;
+  --font-family-street: var(--font-street), var(--font-display), "Arial Black", sans-serif;
   --font-family-interface: var(--font-interface), "Segoe UI", system-ui, sans-serif;
   --font-family-reading: var(--font-reading), Georgia, "Times New Roman", serif;
 

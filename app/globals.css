@@ -167,11 +167,14 @@ select {
 
 /* Tipografi yardımcıları — 17.3 */
 .type-display {
-  font-family: var(--font-family-display);
-  font-weight: 800;
-  letter-spacing: -0.02em;
+  font-family: var(--font-family-street);
+  font-weight: 400;
+  letter-spacing: 0;
   text-transform: uppercase;
   line-height: 0.95;
+  text-shadow:
+    2px 2px 0 rgba(0, 0, 0, 0.78),
+    0 0 18px rgba(var(--artist-accent-rgb), 0.16);
 }
 
 .type-reading {

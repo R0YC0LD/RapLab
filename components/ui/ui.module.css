@@ -158,14 +158,18 @@
 
 /* Bölüm başlığı */
 .sectionTitle {
-  font-family: var(--font-family-display);
+  font-family: var(--font-family-street);
+  font-weight: 400;
   text-transform: uppercase;
-  letter-spacing: 0.02em;
+  letter-spacing: 0;
   font-size: var(--font-2xl);
   margin-bottom: var(--space-6);
   display: flex;
   align-items: baseline;
   gap: var(--space-3);
+  text-shadow:
+    2px 2px 0 rgba(0, 0, 0, 0.76),
+    0 0 16px rgba(var(--artist-accent-rgb), 0.12);
 }
 
 .sectionTitle span {

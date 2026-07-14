@@ -35,12 +35,17 @@
 }
 
 .logo {
-  font-family: var(--font-family-display);
+  font-family: var(--font-family-street);
+  font-weight: 400;
   font-size: var(--font-xl);
-  letter-spacing: 0.04em;
+  letter-spacing: 0;
+  line-height: 1;
   text-transform: uppercase;
   transition: font-size var(--duration-normal) var(--ease-standard);
   color: var(--color-text-primary);
+  text-shadow:
+    2px 2px 0 rgba(0, 0, 0, 0.9),
+    0 0 14px rgba(var(--artist-accent-rgb), 0.18);
 }
 
 .logoCompact {
