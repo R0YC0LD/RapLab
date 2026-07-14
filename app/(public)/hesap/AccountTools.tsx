@@ -11,6 +11,7 @@
 
 import { useRouter } from "next/navigation";
 import { startTransition, useEffect, useRef, useState } from "react";
+import { PenLine } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 import { uploadFormWithTimeout, validateImageSelection } from "@/lib/uploads/client";
 import { SEARCH_DEBOUNCE_MS } from "@/lib/validation";
@@ -252,7 +253,7 @@ export function UsernameChanger({
   if (!open) {
     return (
       <Button variant="ghost" onClick={() => setOpen(true)}>
-        ✏️ Kullanıcı adını değiştir
+        <PenLine size={16} aria-hidden="true" /> Kullanıcı adını değiştir
       </Button>
     );
   }

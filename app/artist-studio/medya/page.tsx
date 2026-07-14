@@ -1,6 +1,7 @@
 ﻿/** Medya Kütüphanesi — Şartname 13.5 */
 
 import type { Metadata } from "next";
+import { Headphones, Video } from "lucide-react";
 import { listArtistMedia } from "@/features/media/service";
 import { StatusChip } from "@/components/ui/Badge";
 import { EmptyState } from "@/components/ui/EmptyState";
@@ -60,7 +61,9 @@ export default async function StudioMediaPage({
                       // eslint-disable-next-line @next/next/no-img-element
                       <img src={m.storage_path} alt="" width={56} height={56} style={{ borderRadius: 8, objectFit: "cover" }} loading="lazy" />
                     ) : (
-                      <span style={{ fontSize: 22 }}>{m.media_type === "video" ? "🎬" : "🎧"}</span>
+                      <span style={{ width: 40, height: 40, display: "grid", placeItems: "center", border: "1px solid var(--color-border-soft)", borderRadius: "var(--radius-sm)", color: "var(--color-text-muted)" }}>
+                        {m.media_type === "video" ? <Video size={19} aria-label="Video" /> : <Headphones size={19} aria-label="Ses" />}
+                      </span>
                     )}
                   </td>
                   <td>{m.mime_type}</td>

@@ -2,6 +2,7 @@
 
 import type { Metadata } from "next";
 import Link from "next/link";
+import { Clock3, Pin } from "lucide-react";
 import { getStudioPosts } from "@/features/posts/service";
 import { StatusChip } from "@/components/ui/Badge";
 import { EmptyState } from "@/components/ui/EmptyState";
@@ -82,7 +83,7 @@ export default async function StudioPostsPage({
                   <tr key={p.id}>
                     <td style={{ maxWidth: 280 }}>
                       <p style={{ fontWeight: 600, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
-                        {p.is_pinned && "📌 "}
+                        {p.is_pinned && <Pin size={14} aria-label="Sabitlendi" style={{ verticalAlign: -2, marginRight: 5 }} />}
                         {p.title ?? p.body?.slice(0, 60) ?? "—"}
                       </p>
                     </td>
@@ -96,7 +97,7 @@ export default async function StudioPostsPage({
                     <td>{p.like_count.toLocaleString("tr-TR")}</td>
                     <td style={{ whiteSpace: "nowrap", color: "var(--color-text-muted)" }}>
                       {p.status === "scheduled" && p.scheduled_at
-                        ? `⏱ ${new Date(p.scheduled_at).toLocaleString("tr-TR", { day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" })}`
+                        ? <span style={{ display: "inline-flex", alignItems: "center", gap: 5 }}><Clock3 size={14} aria-hidden="true" />{new Date(p.scheduled_at).toLocaleString("tr-TR", { day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" })}</span>
                         : new Date(p.published_at ?? p.created_at).toLocaleDateString("tr-TR", { day: "numeric", month: "short" })}
                     </td>
                     <td>

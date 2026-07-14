@@ -1,0 +1,11 @@
+.sticker {
+  display: inline-block;
+  width: var(--sticker-size);
+  height: var(--sticker-size);
+  flex: 0 0 var(--sticker-size);
+  background-image: var(--sticker-image);
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center;
+  filter: drop-shadow(0 5px 10px rgba(0, 0, 0, 0.32));
+}

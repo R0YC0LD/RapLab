@@ -3,6 +3,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { redirect } from "next/navigation";
+import { ArrowRight, SlidersHorizontal, ShieldCheck } from "lucide-react";
 import { signOut } from "@/features/auth/actions";
 import { getMyApplications } from "@/features/applications/service";
 import { listMembershipsForUser } from "@/features/artists/service";
@@ -92,9 +93,11 @@ export default async function AccountPage() {
             className={ui.card}
             style={{ padding: "var(--space-5)", display: "flex", justifyContent: "space-between", alignItems: "center" }}
           >
-            <span style={{ fontWeight: 700 }}>🎛️ Artist Studio</span>
-            <span style={{ color: "var(--color-text-muted)", fontSize: "var(--font-sm)" }}>
-              {memberships.length} sanatçı profili →
+            <span style={{ display: "inline-flex", alignItems: "center", gap: 9, fontWeight: 700 }}>
+              <SlidersHorizontal size={18} aria-hidden="true" /> Artist Studio
+            </span>
+            <span style={{ display: "inline-flex", alignItems: "center", gap: 7, color: "var(--color-text-muted)", fontSize: "var(--font-sm)" }}>
+              {memberships.length} sanatçı profili <ArrowRight size={15} aria-hidden="true" />
             </span>
           </Link>
         )}
@@ -104,8 +107,12 @@ export default async function AccountPage() {
             className={ui.card}
             style={{ padding: "var(--space-5)", display: "flex", justifyContent: "space-between", alignItems: "center" }}
           >
-            <span style={{ fontWeight: 700 }}>🕹️ Control Center</span>
-            <span style={{ color: "var(--color-text-muted)", fontSize: "var(--font-sm)" }}>platform yönetimi →</span>
+            <span style={{ display: "inline-flex", alignItems: "center", gap: 9, fontWeight: 700 }}>
+              <ShieldCheck size={18} aria-hidden="true" /> Control Center
+            </span>
+            <span style={{ display: "inline-flex", alignItems: "center", gap: 7, color: "var(--color-text-muted)", fontSize: "var(--font-sm)" }}>
+              platform yönetimi <ArrowRight size={15} aria-hidden="true" />
+            </span>
           </Link>
         )}
       </section>

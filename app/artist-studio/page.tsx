@@ -1,6 +1,7 @@
 ﻿/** Genel Bakış — Şartname 13.2 kartları */
 
 import type { Metadata } from "next";
+import { Zap } from "lucide-react";
 import { getStudioOverview } from "@/lib/analytics";
 import { getGroupedArtistNotifications } from "@/lib/analytics";
 import { isDemoMode } from "@/lib/env";
@@ -63,7 +64,8 @@ export default async function StudioOverviewPage({
                 fontSize: "var(--font-sm)",
               }}
             >
-              ⚡ {msg}
+              <Zap size={16} aria-hidden="true" style={{ verticalAlign: -3, marginRight: 7 }} />
+              {msg}
             </p>
           ))}
         </div>

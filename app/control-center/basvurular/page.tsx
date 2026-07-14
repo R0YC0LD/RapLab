@@ -1,6 +1,7 @@
 ﻿/** Sanatçı Başvuruları — Şartname 12.3, 14.1 */
 
 import type { Metadata } from "next";
+import { LockKeyhole, Mic2 } from "lucide-react";
 import { listApplications } from "@/features/moderation/service";
 import { roleAtLeast } from "@/lib/permissions";
 import { StatusChip } from "@/components/ui/Badge";
@@ -74,17 +75,24 @@ export default async function ApplicationsPage() {
                 <div>
                   <dt style={{ color: "var(--color-text-muted)" }}>Kimlik belgesi</dt>
                   <dd style={{ margin: 0 }}>
-                    {app.identity_document_path
-                      ? app.identity_viewed_at
-                        ? "🔒 Bir kez görüntülendi — erişim kapandı"
-                        : "🔒 Tek seferlik görüntülemeye hazır"
-                      : "Yüklenmedi"}
+                    {app.identity_document_path ? (
+                      <span style={{ display: "inline-flex", alignItems: "center", gap: 6 }}>
+                        <LockKeyhole size={14} aria-hidden="true" />
+                        {app.identity_viewed_at
+                          ? "Bir kez görüntülendi — erişim kapandı"
+                          : "Tek seferlik görüntülemeye hazır"}
+                      </span>
+                    ) : "Yüklenmedi"}
                   </dd>
                 </div>
                 <div>
                   <dt style={{ color: "var(--color-text-muted)" }}>Ses beyanı</dt>
                   <dd style={{ margin: 0 }}>
-                    {app.voice_declaration_path ? "🎙 Dinlenebilir" : "Yüklenmedi"}
+                    {app.voice_declaration_path ? (
+                      <span style={{ display: "inline-flex", alignItems: "center", gap: 6 }}>
+                        <Mic2 size={14} aria-hidden="true" /> Dinlenebilir
+                      </span>
+                    ) : "Yüklenmedi"}
                   </dd>
                 </div>
               </dl>

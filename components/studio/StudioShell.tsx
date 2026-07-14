@@ -3,24 +3,40 @@
  */
 
 import Link from "next/link";
+import {
+  ArrowUpRight,
+  BarChart3,
+  CircleHelp,
+  Disc3,
+  FileText,
+  Images,
+  LayoutDashboard,
+  Library,
+  Palette,
+  Settings,
+  SquarePlus,
+  UserRoundCog,
+  UsersRound,
+  type LucideIcon,
+} from "lucide-react";
 import type { Artist } from "@/types";
 import { ensureReadableAccent, hexToRgbString } from "@/lib/theme/contrast";
 import { Avatar } from "@/components/ui/Avatar";
 import styles from "@/app/artist-studio/studio.module.css";
 
-const NAV = [
-  { href: "", label: "Genel Bakış", icon: "◉" },
-  { href: "/gonderiler", label: "Gönderiler", icon: "▤" },
-  { href: "/yeni-gonderi", label: "Yeni Gönderi", icon: "＋" },
-  { href: "/medya", label: "Medya Kütüphanesi", icon: "▣" },
-  { href: "/profil-tasarimi", label: "Profil Tasarımı", icon: "◐" },
-  { href: "/projeler", label: "Projeler", icon: "◔" },
-  { href: "/analizler", label: "Analizler", icon: "∿" },
-  { href: "/takipciler", label: "Takipçiler", icon: "◎" },
-  { href: "/fan-sanati", label: "Fan Sanatı", icon: "◇" },
-  { href: "/ekip", label: "Ekip", icon: "⦿" },
-  { href: "/ayarlar", label: "Ayarlar", icon: "⚙" },
-  { href: "/destek", label: "Destek", icon: "?" },
+const NAV: { href: string; label: string; icon: LucideIcon }[] = [
+  { href: "", label: "Genel Bakış", icon: LayoutDashboard },
+  { href: "/gonderiler", label: "Gönderiler", icon: FileText },
+  { href: "/yeni-gonderi", label: "Yeni Gönderi", icon: SquarePlus },
+  { href: "/medya", label: "Medya Kütüphanesi", icon: Library },
+  { href: "/profil-tasarimi", label: "Profil Tasarımı", icon: Palette },
+  { href: "/projeler", label: "Projeler", icon: Disc3 },
+  { href: "/analizler", label: "Analizler", icon: BarChart3 },
+  { href: "/takipciler", label: "Takipçiler", icon: UsersRound },
+  { href: "/fan-sanati", label: "Fan Sanatı", icon: Images },
+  { href: "/ekip", label: "Ekip", icon: UserRoundCog },
+  { href: "/ayarlar", label: "Ayarlar", icon: Settings },
+  { href: "/destek", label: "Destek", icon: CircleHelp },
 ];
 
 export function StudioShell({
@@ -92,6 +108,7 @@ export function StudioShell({
 
         <nav className={styles.nav} aria-label="Studio navigasyonu">
           {NAV.map((item) => {
+            const Icon = item.icon;
             const href = `/artist-studio${item.href}${item.href ? `?sanatci=${artist.id}` : `?sanatci=${artist.id}`}`;
             const isActive = activePath === (item.href || "/");
             return (
@@ -101,7 +118,7 @@ export function StudioShell({
                 className={`${styles.navLink} ${isActive ? styles.navLinkActive : ""}`}
                 aria-current={isActive ? "page" : undefined}
               >
-                <span aria-hidden="true" style={{ width: 18, textAlign: "center" }}>{item.icon}</span>
+                <Icon size={17} strokeWidth={1.8} aria-hidden="true" />
                 {item.label}
               </Link>
             );
@@ -120,7 +137,7 @@ export function StudioShell({
             color: "var(--color-text-secondary)",
           }}
         >
-          Herkese açık profili gör ↗
+          Herkese açık profili gör <ArrowUpRight size={15} aria-hidden="true" style={{ verticalAlign: -3 }} />
         </Link>
       </aside>
 

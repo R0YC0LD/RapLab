@@ -6,6 +6,7 @@
  */
 
 import Link from "next/link";
+import { CalendarDays } from "lucide-react";
 import type { PostWithArtist } from "@/types";
 import { hexToRgbString } from "@/lib/theme/contrast";
 import { Avatar } from "@/components/ui/Avatar";
@@ -134,8 +135,8 @@ export function PostCard({
       )}
 
       {(post.post_type === "announcement" || post.post_type === "project") && post.meta?.event_date && (
-        <p style={{ fontSize: "var(--font-sm)", color: "var(--color-text-muted)" }}>
-          📅{" "}
+        <p style={{ display: "flex", alignItems: "center", gap: 7, fontSize: "var(--font-sm)", color: "var(--color-text-muted)" }}>
+          <CalendarDays size={16} aria-hidden="true" />
           {new Date(post.meta.event_date).toLocaleDateString("tr-TR", {
             day: "numeric",
             month: "long",

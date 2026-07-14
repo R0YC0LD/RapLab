@@ -13,6 +13,7 @@
  */
 
 import { useEffect, useRef, useState } from "react";
+import { IdCard, LockKeyhole, Mic2 } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 
 export function VerificationViewer({
@@ -101,7 +102,9 @@ export function VerificationViewer({
 
       {/* Kimlik */}
       <div style={{ display: "flex", gap: "var(--space-3)", alignItems: "center", flexWrap: "wrap" }}>
-        <span style={{ fontSize: "var(--font-sm)", fontWeight: 600, minWidth: 130 }}>🪪 Kimlik fotoğrafı</span>
+        <span style={{ display: "inline-flex", alignItems: "center", gap: 7, fontSize: "var(--font-sm)", fontWeight: 600, minWidth: 130 }}>
+          <IdCard size={17} aria-hidden="true" /> Kimlik fotoğrafı
+        </span>
         {!hasIdentity ? (
           <span style={{ color: "var(--color-text-muted)", fontSize: "var(--font-sm)" }}>Yüklenmedi</span>
         ) : identityUrl ? (
@@ -110,7 +113,8 @@ export function VerificationViewer({
           </span>
         ) : identitySpent ? (
           <span style={{ color: "var(--color-text-muted)", fontSize: "var(--font-sm)" }}>
-            🔒 Bir kez görüntülendi{identityViewedAt ? ` (${new Date(identityViewedAt).toLocaleString("tr-TR")})` : ""} — erişim kalıcı olarak kapandı
+            <LockKeyhole size={15} aria-hidden="true" style={{ verticalAlign: -3, marginRight: 6 }} />
+            Bir kez görüntülendi{identityViewedAt ? ` (${new Date(identityViewedAt).toLocaleString("tr-TR")})` : ""} — erişim kalıcı olarak kapandı
           </span>
         ) : confirming ? (
           <span style={{ display: "inline-flex", gap: 8, alignItems: "center", flexWrap: "wrap" }}>
@@ -173,7 +177,9 @@ export function VerificationViewer({
 
       {/* Ses beyanı */}
       <div style={{ display: "flex", gap: "var(--space-3)", alignItems: "center", flexWrap: "wrap" }}>
-        <span style={{ fontSize: "var(--font-sm)", fontWeight: 600, minWidth: 130 }}>🎙 Ses beyanı</span>
+        <span style={{ display: "inline-flex", alignItems: "center", gap: 7, fontSize: "var(--font-sm)", fontWeight: 600, minWidth: 130 }}>
+          <Mic2 size={17} aria-hidden="true" /> Ses beyanı
+        </span>
         {!hasVoice ? (
           <span style={{ color: "var(--color-text-muted)", fontSize: "var(--font-sm)" }}>Yüklenmedi</span>
         ) : voiceUrl ? (
