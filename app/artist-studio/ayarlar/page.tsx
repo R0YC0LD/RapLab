@@ -4,6 +4,7 @@ import type { Metadata } from "next";
 import { StatusChip } from "@/components/ui/Badge";
 import { getStudioContext } from "../helpers";
 import { StudioShell } from "@/components/studio/StudioShell";
+import { CityEditor } from "./CityEditor";
 import styles from "../studio.module.css";
 
 export const metadata: Metadata = { title: "Ayarlar — Artist Studio", robots: { index: false } };
@@ -37,10 +38,6 @@ export default async function StudioSettingsPage({
             <dd style={{ margin: 0, fontWeight: 600 }}>/sanatci/{a.slug}</dd>
           </div>
           <div>
-            <dt style={{ color: "var(--color-text-muted)" }}>Şehir</dt>
-            <dd style={{ margin: 0, fontWeight: 600 }}>{a.city ?? "—"}</dd>
-          </div>
-          <div>
             <dt style={{ color: "var(--color-text-muted)" }}>Türler</dt>
             <dd style={{ margin: 0, fontWeight: 600 }}>{a.genres.join(", ") || "—"}</dd>
           </div>
@@ -61,6 +58,7 @@ export default async function StudioSettingsPage({
             </dd>
           </div>
         </dl>
+        <CityEditor artistId={a.id} currentCity={a.city} />
       </div>
 
       <div className={styles.panel}>

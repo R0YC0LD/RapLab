@@ -7,10 +7,12 @@ import { requireUser } from "@/lib/auth/session";
 import { apiFailure, apiSuccess, ApiError, ErrorCodes } from "@/lib/errors";
 import { checkRateLimit } from "@/lib/rate-limit";
 import { isDemoMode } from "@/lib/env";
+import { TURKEY_CITY_NAMES } from "@/lib/turkey/cities";
 
 const schema = z.object({
   stage_name: z.string().min(2).max(80),
   legal_name: z.string().min(2).max(160),
+  city: z.enum(TURKEY_CITY_NAMES),
   contact_email: z.string().email(),
   phone_optional: z.string().max(40).optional(),
   artist_description: z.string().min(20).max(4000),

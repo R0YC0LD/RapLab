@@ -12,10 +12,11 @@ const NAV_LINKS = [
   { href: "/kesfet", label: "Keşfet", beat: "hat" },
   { href: "/sanatcilar", label: "Sanatçılar", beat: "snare" },
   { href: "/sanatsal", label: "Sanatsal", beat: "bass" },
+  { href: "/vatan", label: "Vatan" },
   { href: "/son-paylasimlar", label: "Son Paylaşımlar", beat: "kick" },
   { href: "/yaklasanlar", label: "Yaklaşanlar", beat: "snare" },
-  { href: "/raplab-ozel", label: "RapLab Özel", beat: "bass" },
-] as const;
+  { href: "/raplab-ozel", label: "RapLab TR Özel", beat: "bass" },
+] satisfies ReadonlyArray<{ href: string; label: string; beat?: string }>;
 
 export function TopNav({
   user,
@@ -63,9 +64,9 @@ export function TopNav({
           <Link
             href="/"
             className={`${styles.logo} ${compact ? styles.logoCompact : ""}`}
-            aria-label="RapLab ana sayfa"
+            aria-label="RapLab TR ana sayfa"
           >
-            RAP<em>LAB</em>
+            RAP<em>LAB</em><span className={styles.countryMark}>TR</span>
           </Link>
 
           <nav className={styles.links} aria-label="Ana navigasyon">

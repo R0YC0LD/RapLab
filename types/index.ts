@@ -330,6 +330,7 @@ export interface ArtistApplication {
   user_id: string;
   stage_name: string;
   legal_name: string;
+  city: string | null;
   contact_email: string;
   phone_optional: string | null;
   artist_description: string;
@@ -339,7 +340,7 @@ export interface ArtistApplication {
   applicant_relationship: "artist" | "manager" | "label" | "team_member";
   identity_document_path: string | null;
   authorization_document_path: string | null;
-  /** "Sitenize sanatçı üyeliği yapmak istiyorum" ses beyanı — özel bucket yolu */
+  /** "RapLab TR'ye sanatçı üyeliği yapmak istiyorum" ses beyanı — özel bucket yolu */
   voice_declaration_path: string | null;
   /** Kimlik belgesi tek seferlik görüntüleme kilidi */
   identity_viewed_at: string | null;

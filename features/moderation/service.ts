@@ -188,7 +188,7 @@ export async function approveApplication(
       slug,
       short_bio: app.artist_description.slice(0, 300),
       long_bio: app.artist_description,
-      city: null,
+      city: app.city,
       genres: [],
       profile_image_path: "/demo/avatars/user.svg",
       desktop_cover_path: "/demo/artists/default-cover.svg",

@@ -34,7 +34,7 @@ export function AuthCard({
           className="type-display"
           style={{ fontSize: "var(--font-lg)", color: "var(--artist-accent)", marginBottom: "var(--space-2)" }}
         >
-          RAPLAB
+          RAPLAB TR
         </p>
         <h1 style={{ fontSize: "var(--font-2xl)", marginBottom: "var(--space-2)" }}>{title}</h1>
         <p style={{ color: "var(--color-text-secondary)", marginBottom: "var(--space-8)", fontSize: "var(--font-sm)" }}>

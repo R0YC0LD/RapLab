@@ -87,7 +87,7 @@ export async function inviteMember(
     .maybeSingle();
   if (!invitedProfile) {
     throw new ApiError(ErrorCodes.VALIDATION_FAILED, {
-      invite_email: "Bu e-postaya bağlı RapLab hesabı bulunamadı.",
+      invite_email: "Bu e-postaya bağlı RapLab TR hesabı bulunamadı.",
     });
   }
   const { data, error } = await supabase

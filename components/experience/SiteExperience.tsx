@@ -355,12 +355,12 @@ export function SiteExperience() {
         <section
           id="raplab-808-panel"
           className={styles.beatPanel}
-          aria-label="RapLab 808 ritim stüdyosu"
+          aria-label="RapLab TR 808 ritim stüdyosu"
         >
           <header className={styles.beatHeader}>
             <BrandSticker name="machine" size={54} />
             <div className={styles.beatIdentity}>
-              <strong>RAPLAB 808</strong>
+              <strong>RAPLAB TR 808</strong>
               <span className={soundEnabled ? styles.liveState : undefined}>
                 {isPlaying ? "CANLI" : soundEnabled ? "HAZIR" : "SESSİZ"}
               </span>
@@ -490,7 +490,7 @@ export function SiteExperience() {
           aria-expanded="false"
           aria-controls="raplab-808-panel"
           aria-label="808 stüdyosunu aç"
-          title="RapLab 808"
+          title="RapLab TR 808"
         >
           <BrandSticker name="machine" size={46} />
           <span>

@@ -6,7 +6,7 @@ import { EmptyState } from "@/components/ui/EmptyState";
 import { FanArtCard } from "./FanArtCard";
 import styles from "./sanatsal.module.css";
 
-export const metadata: Metadata = { title: "Sanatsal", description: "RapLab fanlarının özgün çizim ve grafik tasarım galerisi." };
+export const metadata: Metadata = { title: "Sanatsal", description: "RapLab TR fanlarının özgün çizim ve grafik tasarım galerisi." };
 
 export default async function FanArtPage() {
   const user = await getSessionUser();

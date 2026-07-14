@@ -233,7 +233,7 @@ export default async function ArtistProfilePage({
                 </p>
               </div>
               <div className={styles.aboutBlock}>
-                <h3>RapLab Doğrulama</h3>
+                <h3>RapLab TR Doğrulama</h3>
                 <p>
                   {new Date(artist.created_at).toLocaleDateString("tr-TR", {
                     month: "long",
@@ -273,7 +273,7 @@ export default async function ArtistProfilePage({
                 <div className={styles.timelineDate}>
                   {new Date(artist.created_at).toLocaleDateString("tr-TR", { month: "long", year: "numeric" })}
                 </div>
-                <p style={{ fontWeight: 600, margin: "4px 0" }}>RapLab&apos;e katıldı</p>
+                <p style={{ fontWeight: 600, margin: "4px 0" }}>RapLab TR&apos;ye katıldı</p>
               </div>
             </div>
           </div>

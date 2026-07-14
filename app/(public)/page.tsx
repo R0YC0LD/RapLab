@@ -140,7 +140,7 @@ export default async function HomePage({
               )}
 
               <div className={styles.asideCard}>
-                <h3>RapLab Nedir?</h3>
+                <h3>RapLab TR Nedir?</h3>
                 <p style={{ fontSize: "var(--font-sm)", color: "var(--color-text-secondary)", lineHeight: 1.6 }}>
                   Sanatçının konuştuğu, takipçinin takip edip beğenerek tepki verdiği premium
                   dijital kültür platformu.

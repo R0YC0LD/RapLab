@@ -33,7 +33,7 @@ export default async function RegisterPage() {
   }
 
   return (
-    <AuthCard title="RapLab'e katıl" subtitle="Sanatçıları takip et, paylaşımlarına tepki ver, kültürün içinde ol.">
+    <AuthCard title="RapLab TR'ye katıl" subtitle="Sanatçıları takip et, paylaşımlarına tepki ver, kültürün içinde ol.">
       {demo && (
         <p
           style={{

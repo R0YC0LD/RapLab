@@ -168,7 +168,7 @@ export function VerificationViewer({
                   textShadow: "0 1px 3px rgba(0,0,0,0.6)",
                 }}
               >
-                RAPLAB · @{adminUsername} · {new Date().toLocaleString("tr-TR")} · TEK SEFERLİK
+                RAPLAB TR · @{adminUsername} · {new Date().toLocaleString("tr-TR")} · TEK SEFERLİK
               </p>
             ))}
           </div>

@@ -43,7 +43,7 @@ export default async function FollowersPage({
         </div>
       )}
       <p className={styles.panel} style={{ color: "var(--color-text-secondary)", fontSize: "var(--font-sm)", lineHeight: 1.7 }}>
-        RapLab, sanatçılara takipçilerin kimliklerini veya tekil hareketlerini göstermez
+        RapLab TR, sanatçılara takipçilerin kimliklerini veya tekil hareketlerini göstermez
         (Şartname 13.7). Takipçi listesi yerine büyüme, etkileşim ve dönüşüm gibi
         toplulaştırılmış veriler sunulur. Ayrıntılı kırılımlar için Analizler bölümüne bak.
       </p>

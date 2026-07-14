@@ -41,11 +41,11 @@ const readingFont = Lora({
 
 export const metadata: Metadata = {
   title: {
-    default: "RapLab — Türkçe Rap Sanatçı–Topluluk Platformu",
-    template: "%s | RapLab",
+    default: "RapLab TR — Türkiye Rap Sanatçı–Topluluk Platformu",
+    template: "%s | RapLab TR",
   },
   description:
-    "RapLab; sanatçının konuştuğu, takipçinin takip edip beğenerek tepki verdiği, sanatçı kimliğinin merkezde olduğu premium dijital kültür platformu.",
+    "RapLab TR; Türkiye rap sahnesini, sanatçıları ve topluluğu şehir şehir buluşturan dijital kültür platformu.",
 };
 
 export const viewport: Viewport = {
@@ -91,9 +91,9 @@ export default async function RootLayout({ children }: { children: React.ReactNo
               marginBottom: "var(--space-3)",
             }}
           >
-            RAPLAB
+            RAPLAB TR
           </p>
-          <p>Türkçe rap kültürü için tasarlanmış sanatçı–topluluk platformu.</p>
+          <p>Türkiye rap kültürü için tasarlanmış sanatçı–topluluk platformu.</p>
         </footer>
       </body>
     </html>

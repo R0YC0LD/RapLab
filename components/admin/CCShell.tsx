@@ -59,7 +59,7 @@ export function CCShell({
       <aside className={styles.sidebar}>
         <Link href="/" className={styles.brand}>
           <span className={styles.statusDot} aria-hidden="true" />
-          RAPLAB <span style={{ color: "var(--color-info)", letterSpacing: 0, fontSize: "var(--font-xs)" }}>control</span>
+          RAPLAB TR <span style={{ color: "var(--color-info)", letterSpacing: 0, fontSize: "var(--font-xs)" }}>control</span>
         </Link>
 
         {NAV.map((group) => (

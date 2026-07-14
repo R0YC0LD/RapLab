@@ -67,6 +67,10 @@ export default async function ApplicationsPage() {
                   <dd style={{ margin: 0 }}>{app.contact_email}</dd>
                 </div>
                 <div>
+                  <dt style={{ color: "var(--color-text-muted)" }}>Şehir</dt>
+                  <dd style={{ margin: 0 }}>{app.city ?? "Belirtilmedi"}</dd>
+                </div>
+                <div>
                   <dt style={{ color: "var(--color-text-muted)" }}>Bağlantılar</dt>
                   <dd style={{ margin: 0 }}>
                     {app.official_social_links.length + app.distribution_links.length} adet

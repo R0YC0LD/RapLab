@@ -5,12 +5,13 @@
  * - Süreç, başvuru GÖNDERİLMEDEN ÖNCE adım adım anlatılır (şeffaf sistem)
  * - Geçici kimlik fotoğrafı: özel bucket'a yüklenir, süper yönetici yalnızca
  *   BİR KEZ süreli bağlantıyla görebilir, erişim loglanır
- * - Ses beyanı: "RapLab'e sanatçı üyeliği yapmak istiyorum" kaydı (teyit)
+ * - Ses beyanı: "RapLab TR'ye sanatçı üyeliği yapmak istiyorum" kaydı (teyit)
  */
 
 import { useState } from "react";
 import { VoiceDeclarationRecorder } from "@/components/media/VoiceDeclarationRecorder";
 import { Button } from "@/components/ui/Button";
+import { TURKEY_CITIES } from "@/lib/turkey/cities";
 
 const inputStyle: React.CSSProperties = {
   padding: "12px 14px",
@@ -96,6 +97,7 @@ export function ApplicationForm({ demoMode }: { demoMode: boolean }) {
         body: JSON.stringify({
           stage_name: fd.get("stage_name"),
           legal_name: fd.get("legal_name"),
+          city: fd.get("city"),
           contact_email: fd.get("contact_email"),
           phone_optional: fd.get("phone_optional") || undefined,
           artist_description: fd.get("artist_description"),
@@ -208,6 +210,22 @@ export function ApplicationForm({ demoMode }: { demoMode: boolean }) {
         {err("legal_name")}
       </label>
 
+      <label style={{ display: "grid", gap: 6, fontSize: "var(--font-sm)" }}>
+        Çıkış şehri / memleket *
+        <select name="city" required defaultValue="" style={inputStyle}>
+          <option value="" disabled>Şehir seç</option>
+          {TURKEY_CITIES.map((city) => (
+            <option key={city.id} value={city.name}>
+              {String(city.plate).padStart(2, "0")} · {city.name}
+            </option>
+          ))}
+        </select>
+        <span style={{ color: "var(--color-text-muted)", fontSize: "var(--font-xs)" }}>
+          Onaydan sonra Vatan haritasında sanatçı profilin bu şehirde gösterilir.
+        </span>
+        {err("city")}
+      </label>
+
       <div className="responsive-grid-2">
         <label style={{ display: "grid", gap: 6, fontSize: "var(--font-sm)" }}>
           İletişim e-postası *
@@ -288,7 +306,7 @@ export function ApplicationForm({ demoMode }: { demoMode: boolean }) {
       <div style={{ padding: "var(--space-5)", borderRadius: "var(--radius-md)", border: "1px dashed var(--color-border-strong)" }}>
         <p style={{ fontWeight: 600, marginBottom: 6 }}>Sesli beyan *</p>
         <VoiceDeclarationRecorder
-          prompt="RapLab'e sanatçı üyeliği yapmak istiyorum."
+          prompt="RapLab TR'ye sanatçı üyeliği yapmak istiyorum."
           onRecorded={setVoiceBlob}
           disabled={demoMode}
         />

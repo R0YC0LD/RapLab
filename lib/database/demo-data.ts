@@ -687,6 +687,7 @@ export const demoApplications: ArtistApplication[] = [
     user_id: "u-applicant",
     stage_name: "Sokak Şairi",
     legal_name: "(kurgusal başvuru)",
+    city: "İstanbul",
     contact_email: "demo@raplab.local",
     phone_optional: null,
     artist_description:
@@ -712,6 +713,7 @@ export const demoApplications: ArtistApplication[] = [
     user_id: "u-demo-user",
     stage_name: "Ekho",
     legal_name: "(kurgusal başvuru)",
+    city: "Ankara",
     contact_email: "demo2@raplab.local",
     phone_optional: null,
     artist_description: "Yeni nesil prodüktör/rapçi. Kataloğum ekte.",

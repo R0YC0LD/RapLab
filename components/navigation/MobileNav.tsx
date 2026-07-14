@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Bell, House, Images, Mic2, UserRound, type LucideIcon } from "lucide-react";
+import { Bell, House, Images, MapPinned, Mic2, UserRound, type LucideIcon } from "lucide-react";
 import type { SessionUser } from "@/types";
 import styles from "./nav.module.css";
 
@@ -14,6 +14,7 @@ const ITEMS: {
   { href: "/", label: "Ana Sayfa", icon: House },
   { href: "/sanatsal", label: "Sanatsal", icon: Images },
   { href: "/sanatcilar", label: "Sanatçılar", icon: Mic2 },
+  { href: "/vatan", label: "Vatan", icon: MapPinned },
   { href: "/bildirimler", label: "Bildirimler", icon: Bell },
 ];
 

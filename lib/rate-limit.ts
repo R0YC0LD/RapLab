@@ -27,6 +27,7 @@ export const RATE_LIMITS = {
   search: [40, 60_000],
   create_post: [10, 60_000],
   media_upload: [20, 60_000],
+  profile_update: [20, 60_000],
   artist_application: [3, 3600_000],
   report: [10, 3600_000],
   admin_action: [60, 60_000],

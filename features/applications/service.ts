@@ -12,6 +12,7 @@ import type { ArtistApplication, SessionUser } from "@/types";
 export interface ApplicationInput {
   stage_name: string;
   legal_name: string;
+  city: string;
   contact_email: string;
   phone_optional?: string;
   artist_description: string;
@@ -62,6 +63,7 @@ export async function createApplication(
       user_id: viewer.id,
       stage_name: input.stage_name,
       legal_name: input.legal_name,
+      city: input.city,
       contact_email: input.contact_email,
       phone_optional: input.phone_optional ?? null,
       artist_description: input.artist_description,

@@ -88,7 +88,7 @@ export default async function DiscoverPage() {
       {editorsPick.length > 0 && (
         <section className={`container ${styles.section}`}>
           <h2 className={ui.sectionTitle}>
-            RapLab Editör Seçkisi <span>bizden tavsiyeler</span>
+            RapLab TR Editör Seçkisi <span>bizden tavsiyeler</span>
           </h2>
           <div className={styles.discoveryGrid}>
             {editorsPick.map((a) => (

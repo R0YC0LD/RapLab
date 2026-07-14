@@ -147,6 +147,7 @@ describe("sanatçı başvurusu ve onayı (12)", () => {
       {
         stage_name: "Test Mikrofon",
         legal_name: "Kurgusal Kişi",
+        city: "İstanbul",
         contact_email: "test@raplab.local",
         artist_description: "Yeterince uzun kurgusal bir sanatçı açıklaması.",
         official_social_links: [],
@@ -163,7 +164,9 @@ describe("sanatçı başvurusu ve onayı (12)", () => {
     expect(result.slug).toBe("test-mikrofon");
 
     const s = demoState();
-    expect(s.artists.some((a) => a.id === result.artistId && a.verification_status === "approved")).toBe(true);
+    expect(s.artists.some((a) =>
+      a.id === result.artistId && a.verification_status === "approved" && a.city === "İstanbul"
+    )).toBe(true);
     expect(s.members.some((m) => m.artist_id === result.artistId && m.member_role === "owner")).toBe(true);
     expect(s.profiles.find((p) => p.id === "u-demo-user")!.role).toBe("artist");
     expect(s.auditLogs.some((l) => l.action === "artist_application.approved" && l.target_id === app.id)).toBe(true);
@@ -191,6 +194,7 @@ describe("sanatçı başvurusu ve onayı (12)", () => {
         {
           stage_name: "X",
           legal_name: "Y",
+          city: "Ankara",
           contact_email: "x@raplab.local",
           artist_description: "Yeterince uzun kurgusal açıklama metni.",
           official_social_links: [],

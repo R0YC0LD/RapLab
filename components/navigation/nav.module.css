@@ -57,6 +57,20 @@
   color: var(--artist-accent);
 }
 
+.countryMark {
+  display: inline-block;
+  margin-left: 5px;
+  padding: 3px 4px 2px;
+  border: 1px solid rgba(var(--artist-accent-rgb), 0.65);
+  border-radius: 2px;
+  color: var(--color-text-primary);
+  font-family: var(--font-family-display);
+  font-size: 9px;
+  font-weight: 900;
+  line-height: 1;
+  vertical-align: top;
+}
+
 .links {
   display: flex;
   align-items: center;
@@ -165,7 +179,7 @@
 @media (max-width: 1023px) {
   .mobileNav {
     display: grid;
-    grid-template-columns: repeat(5, 1fr);
+    grid-template-columns: repeat(6, minmax(0, 1fr));
   }
 }
 
@@ -179,6 +193,15 @@
   font-size: 10px;
   color: var(--color-text-muted);
   min-height: 44px; /* 31: dokunma alanı */
+  min-width: 0;
+}
+
+.mobileLink span:last-child {
+  max-width: 100%;
+  overflow: hidden;
+  padding-inline: 2px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .mobileBadge {
@@ -203,6 +226,10 @@
   .mobileNav {
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
+  }
+
+  .mobileLink {
+    font-size: 9px;
   }
 }
 

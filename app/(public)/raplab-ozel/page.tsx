@@ -10,7 +10,7 @@ import { EmptyState } from "@/components/ui/EmptyState";
 import ui from "@/components/ui/ui.module.css";
 import styles from "../page.module.css";
 
-export const metadata: Metadata = { title: "RapLab Özel" };
+export const metadata: Metadata = { title: "RapLab TR Özel" };
 
 export default async function SpecialPage() {
   const user = await getSessionUser();
@@ -24,7 +24,7 @@ export default async function SpecialPage() {
   return (
     <div className={`container ${styles.section} page-enter`}>
       <h1 className={ui.sectionTitle}>
-        RapLab Özel <span style={{ color: "var(--accent-gold)" }}>editör masasından</span>
+        RapLab TR Özel <span style={{ color: "var(--accent-gold)" }}>editör masasından</span>
       </h1>
 
       {special.length === 0 ? (
